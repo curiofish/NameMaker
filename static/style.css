@@ -198,6 +198,42 @@ footer {
     font-size: 0.9rem;
 }
 
+.saved-names {
+    margin-top: 4rem;
+}
+
+.saved-names h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+}
+
+.saved-names-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.saved-name-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.saved-date {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+.save-button {
+    margin-top: 1rem;
+    background-color: var(--success-color);
+}
+
+.save-button:hover {
+    background-color: #219a52;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 1rem;
@@ -227,5 +263,9 @@ footer {
 
     .analysis {
         grid-template-columns: 1fr;
+    }
+
+    .saved-names-list {
+        gap: 1rem;
     }
 } 

@@ -45,6 +45,40 @@
                 </div>
                 <div id="nameList"></div>
             </div>
+
+            {% if saved_names %}
+            <div id="savedNames" class="saved-names">
+                <h2>최근 저장된 이름</h2>
+                <div class="saved-names-list">
+                    {% for name in saved_names %}
+                    <div class="saved-name-card">
+                        <div class="name-header">
+                            <h3>{{ name.name }}</h3>
+                            <span class="saved-date">{{ name.created_at[:10] }}</span>
+                        </div>
+                        <div class="name-details">
+                            <p class="hanja">한자: {{ name.hanja }}</p>
+                            <p class="meaning">의미: {{ name.meaning }}</p>
+                        </div>
+                        <div class="analysis">
+                            <div class="analysis-item">
+                                <span class="label">음양</span>
+                                <span class="value">{{ name.yinyang }}</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="label">오행</span>
+                                <span class="value">{{ name.elements }}</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="label">획수</span>
+                                <span class="value">{{ name.strokes }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </main>
 
         <footer>
@@ -72,21 +106,19 @@
                 });
 
                 const data = await response.json();
-                displayResults(data);
+                displayResults(data, formData);
             } catch (error) {
                 console.error('Error:', error);
             }
         });
 
-        function displayResults(data) {
+        function displayResults(data, userData) {
             const resultsDiv = document.getElementById('results');
             const nameListDiv = document.getElementById('nameList');
             
-            // 출생년도와 길흉 정보 표시
             document.getElementById('birthYear').textContent = data.birth_year;
             document.getElementById('compatibility').textContent = data.compatibility;
             
-            // 이름 목록 표시
             nameListDiv.innerHTML = data.names.map((name, index) => `
                 <div class="name-card">
                     <div class="name-header">
@@ -111,10 +143,39 @@
                             <span class="value">${name.analysis.strokes}</span>
                         </div>
                     </div>
+                    <button class="save-button" onclick="saveName(${JSON.stringify(name)}, ${JSON.stringify(userData)})">
+                        이름 저장하기
+                    </button>
                 </div>
             `).join('');
 
             resultsDiv.classList.remove('hidden');
+        }
+
+        async function saveName(nameData, userData) {
+            try {
+                const response = await fetch('/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name_data: nameData,
+                        user_data: userData
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(result.message);
+                    location.reload();  // 페이지를 새로고침하여 저장된 이름 목록 업데이트
+                } else {
+                    alert('저장 실패: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('저장 중 오류가 발생했습니다.');
+            }
         }
     </script>
 </body>
