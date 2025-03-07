@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>무료 작명소</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>무료 작명소</h1>
+            <p>전통적인 작명 원리로 이름을 지어보세요</p>
+        </header>
+
+        <main>
+            <form id="nameForm">
+                <div class="form-group">
+                    <label for="familyName">성씨</label>
+                    <input type="text" id="familyName" name="familyName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">성별</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">선택하세요</option>
+                        <option value="male">남자</option>
+                        <option value="female">여자</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthDate">생년월일</label>
+                    <input type="date" id="birthDate" name="birthDate" required>
+                </div>
+
+                <button type="submit">이름 생성하기</button>
+            </form>
+
+            <div id="results" class="hidden">
+                <h2>추천 이름</h2>
+                <div id="nameList"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Copyright © 2024 Curiofish (fishcurio@gmail.com)</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('nameForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                family_name: document.getElementById('familyName').value,
+                gender: document.getElementById('gender').value,
+                birth_date: document.getElementById('birthDate').value
+            };
+
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const nameListDiv = document.getElementById('nameList');
+            
+            nameListDiv.innerHTML = data.names.map(name => `
+                <div class="name-card">
+                    <h3>${name.name}</h3>
+                    <p>한자: ${name.hanja}</p>
+                    <p>의미: ${name.meaning}</p>
+                    <div class="analysis">
+                        <p>음양: ${name.analysis.yinyang}</p>
+                        <p>오행: ${name.analysis.elements}</p>
+                        <p>획수: ${name.analysis.strokes}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html> 
