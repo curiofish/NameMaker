@@ -9,6 +9,11 @@ from functools import wraps
 import time
 from fpdf import FPDF
 import io
+import sqlite3
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))  # 환경 변수에서 시크릿 키 가져오기
@@ -18,7 +23,22 @@ app.permanent_session_lifetime = timedelta(days=1)  # 세션 유효 기간 설�
 db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'namemaker.db')
 
 # 데이터베이스 초기화
-init_db(db_path)
+def init_db():
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS names
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  name TEXT NOT NULL,
+                  gender TEXT NOT NULL,
+                  birth_date TEXT NOT NULL,
+                  fortune_score INTEGER NOT NULL,
+                  analysis TEXT NOT NULL,
+                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+    conn.commit()
+    conn.close()
+
+# 데이터베이스 초기화
+init_db()
 
 def login_required(f):
     """로그인이 필요한 라우트를 위한 데코레이터"""
