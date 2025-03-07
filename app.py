@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 import os
 from model.database import init_db, create_user, authenticate_user, save_name, get_user_names, get_name_by_id
 from model.name_generator import generate_name
-from model.pdf_generator import create_name_report
 from functools import wraps
 import time
 from fpdf import FPDF
