@@ -181,24 +181,39 @@ def dashboard():
     return render_template('dashboard.html', names=user_names)
 
 @app.route('/generate', methods=['GET', 'POST'])
-@login_required
 def generate():
     """이름 생성"""
-    if request.method == 'POST':
-        try:
+    try:
+        if request.method == 'POST':
+            # 입력값 검증
             family_name = request.form.get('family_name', '')
             gender = request.form.get('gender', '')
             birth_year = request.form.get('birth_year', '')
             
-            app.logger.info(f"Generating names for: {family_name}, {gender}, {birth_year}")
+            if not all([family_name, gender, birth_year]):
+                flash('모든 필드를 입력해주세요.', 'error')
+                return render_template('generate.html')
             
-            names = generate_name(family_name, gender, int(birth_year), 5)
+            try:
+                birth_year = int(birth_year)
+                if birth_year < 1900 or birth_year > 2100:
+                    flash('올바른 출생년도를 입력해주세요.', 'error')
+                    return render_template('generate.html')
+            except ValueError:
+                flash('올바른 출생년도를 입력해주세요.', 'error')
+                return render_template('generate.html')
+            
+            if gender not in ['남', '여']:
+                flash('올바른 성별을 선택해주세요.', 'error')
+                return render_template('generate.html')
+            
+            # 이름 생성
+            names = generate_name(family_name, gender, birth_year, 5)
             return render_template('generate.html', names=names)
-            
-        except Exception as e:
-            app.logger.error(f"Name generation error: {str(e)}")
-            flash('이름 생성 중 오류가 발생했습니다.', 'error')
-            return render_template('generate.html', error=str(e))
+    except Exception as e:
+        app.logger.error(f"Name generation error: {str(e)}")
+        flash('이름 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error')
+        return render_template('generate.html')
     
     return render_template('generate.html')
 
