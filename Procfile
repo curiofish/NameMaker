@@ -1,1 +1,1 @@
-web: gunicorn app:app 
+web: gunicorn --chdir /opt/render/project/src app:app 
