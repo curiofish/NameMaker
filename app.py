@@ -18,10 +18,10 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))  # 환경 변수에서 시크릿 키 가져오기
 app.permanent_session_lifetime = timedelta(days=1)  # 세션 유효 기간 설정
 
-# 데이터베이스 경로 설정
-db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'namemaker.db')
+# Set database path to tmp directory for Heroku
+db_path = os.path.join('/tmp', 'namemaker.db')
 
-# 데이터베이스 초기화
+# Initialize database
 def init_db():
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
@@ -36,7 +36,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-# 데이터베이스 초기화
+# Initialize database on startup
 init_db()
 
 def login_required(f):

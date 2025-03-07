@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 def init_db():
-    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'namemaker.db')
+    db_path = os.path.join('/tmp', 'namemaker.db')
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     
