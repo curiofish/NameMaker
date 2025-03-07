@@ -19,12 +19,16 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))  # 환경 변수에서 시크릿 키 가져오기
 app.permanent_session_lifetime = timedelta(days=1)  # 세션 유효 기간 설정
 
-# Set database path to tmp directory for Heroku
-db_path = os.path.join('/tmp', 'namemaker.db')
+# Set database path for different environments
+if os.environ.get('HEROKU'):
+    db_path = os.path.join('/tmp', 'namemaker.db')
+else:
+    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'namemaker.db')
 
 def get_db():
     """데이터베이스 연결을 반환하는 함수"""
     try:
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         return conn
@@ -35,29 +39,48 @@ def get_db():
 def init_db():
     """데이터베이스 초기화 함수"""
     try:
+        # Ensure the database directory exists
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
+        
         conn = get_db()
         if conn is None:
             app.logger.error("Could not initialize database: connection failed")
             return False
             
         c = conn.cursor()
+        
+        # Drop existing tables if they exist
+        c.execute("DROP TABLE IF EXISTS names")
+        c.execute("DROP TABLE IF EXISTS users")
+        
+        # Create users table
         c.execute('''CREATE TABLE IF NOT EXISTS users
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
                      username TEXT UNIQUE NOT NULL,
                      password TEXT NOT NULL,
                      email TEXT NOT NULL,
                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+        
+        app.logger.info("Users table created successfully")
                      
+        # Create names table
         c.execute('''CREATE TABLE IF NOT EXISTS names
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
                      user_id INTEGER,
                      name TEXT NOT NULL,
-                     gender TEXT NOT NULL,
-                     birth_date TEXT NOT NULL,
-                     fortune_score INTEGER NOT NULL,
+                     hanja TEXT NOT NULL,
+                     meaning TEXT NOT NULL,
                      analysis TEXT NOT NULL,
+                     score REAL NOT NULL,
+                     gender TEXT NOT NULL,
                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      FOREIGN KEY (user_id) REFERENCES users (id))''')
+        
+        app.logger.info("Names table created successfully")
+        
+        # Create indexes
+        c.execute('CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)')
+        c.execute('CREATE INDEX IF NOT EXISTS idx_names_user_id ON names(user_id)')
         
         conn.commit()
         conn.close()
@@ -127,12 +150,13 @@ def register():
             return redirect(url_for('register'))
         
         try:
-            if create_user(username, password, email):
+            if create_user(username, password, email, db_path):
                 flash('회원가입이 완료되었습니다. 로그인해주세요.', 'success')
                 return redirect(url_for('login'))
             else:
                 flash('이미 존재하는 사용자명입니다.', 'error')
         except Exception as e:
+            app.logger.error(f"Registration error: {str(e)}")
             flash('회원가입 중 오류가 발생했습니다.', 'error')
         
         return redirect(url_for('register'))
@@ -151,17 +175,22 @@ def login():
             flash('모든 필드를 입력해주세요.', 'error')
             return redirect(url_for('login'))
         
-        user = authenticate_user(username, password)
-        if user:
-            session.permanent = True  # 세션 영구 저장
-            session['user_id'] = user['id']
-            session['username'] = user['username']
-            session['login_time'] = datetime.now().isoformat()
-            flash('로그인되었습니다.', 'success')
-            return redirect(url_for('dashboard'))
-        else:
-            flash('아이디 또는 비밀번호가 올바르지 않습니다.', 'error')
-            return redirect(url_for('login'))
+        try:
+            user = authenticate_user(username, password, db_path)
+            if user:
+                session.permanent = True  # 세션 영구 저장
+                session['user_id'] = user['id']
+                session['username'] = user['username']
+                session['login_time'] = datetime.now().isoformat()
+                flash('로그인되었습니다.', 'success')
+                return redirect(url_for('dashboard'))
+            else:
+                flash('아이디 또는 비밀번호가 올바르지 않습니다.', 'error')
+        except Exception as e:
+            app.logger.error(f"Login error: {str(e)}")
+            flash('로그인 중 오류가 발생했습니다.', 'error')
+            
+        return redirect(url_for('login'))
     
     return render_template('login.html')
 
