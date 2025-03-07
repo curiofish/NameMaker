@@ -7,6 +7,8 @@ from model.name_generator import generate_name
 from model.pdf_generator import create_name_report
 from functools import wraps
 import time
+from fpdf import FPDF
+import io
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))  # 환경 변수에서 시크릿 키 가져오기
@@ -218,11 +220,42 @@ def download_report(name_id):
             flash('해당 이름을 찾을 수 없습니다.', 'error')
             return redirect(url_for('dashboard'))
         
-        report_path = create_name_report(name_data, name_id)
+        # Create PDF
+        pdf = FPDF()
+        pdf.add_page()
+        
+        # Add Korean font support
+        pdf.add_font('NanumGothic', '', 'static/fonts/NanumGothic.ttf', uni=True)
+        pdf.set_font('NanumGothic', '', 16)
+        
+        # Title
+        pdf.cell(0, 10, '이름 분석 리포트', ln=True, align='C')
+        pdf.ln(10)
+        
+        # Name information
+        pdf.set_font('NanumGothic', '', 12)
+        pdf.cell(0, 10, f'생성된 이름: {name_data["name"]}', ln=True)
+        pdf.cell(0, 10, f'성별: {name_data["gender"]}', ln=True)
+        pdf.cell(0, 10, f'생년월일: {name_data["birth_date"]}', ln=True)
+        pdf.cell(0, 10, f'행운 점수: {name_data["fortune_score"]}', ln=True)
+        pdf.ln(10)
+        
+        # Meaning
+        pdf.set_font('NanumGothic', '', 10)
+        pdf.multi_cell(0, 10, f'이름의 의미:\n{name_data["meaning"]}')
+        pdf.ln(10)
+        
+        # Analysis
+        pdf.multi_cell(0, 10, f'이름 분석:\n{name_data["analysis"]}')
+        
+        # Save to memory
+        pdf_bytes = pdf.output(dest='S').encode('latin1')
+        
         return send_file(
-            report_path,
+            io.BytesIO(pdf_bytes),
+            mimetype='application/pdf',
             as_attachment=True,
-            download_name=f'name_report_{name_id}.pdf'
+            download_name=f'name_report_{name_data["name"]}.pdf'
         )
     except Exception as e:
         flash('보고서 생성 중 오류가 발생했습니다.', 'error')
