@@ -39,6 +39,10 @@
 
             <div id="results" class="hidden">
                 <h2>추천 이름</h2>
+                <div class="birth-info">
+                    <p>출생년도: <span id="birthYear"></span></p>
+                    <p>종합 길흉: <span id="compatibility"></span></p>
+                </div>
                 <div id="nameList"></div>
             </div>
         </main>
@@ -78,15 +82,34 @@
             const resultsDiv = document.getElementById('results');
             const nameListDiv = document.getElementById('nameList');
             
-            nameListDiv.innerHTML = data.names.map(name => `
+            // 출생년도와 길흉 정보 표시
+            document.getElementById('birthYear').textContent = data.birth_year;
+            document.getElementById('compatibility').textContent = data.compatibility;
+            
+            // 이름 목록 표시
+            nameListDiv.innerHTML = data.names.map((name, index) => `
                 <div class="name-card">
-                    <h3>${name.name}</h3>
-                    <p>한자: ${name.hanja}</p>
-                    <p>의미: ${name.meaning}</p>
+                    <div class="name-header">
+                        <h3>${name.name}</h3>
+                        <span class="name-number">${index + 1}번째 추천</span>
+                    </div>
+                    <div class="name-details">
+                        <p class="hanja">한자: ${name.hanja}</p>
+                        <p class="meaning">의미: ${name.meaning}</p>
+                    </div>
                     <div class="analysis">
-                        <p>음양: ${name.analysis.yinyang}</p>
-                        <p>오행: ${name.analysis.elements}</p>
-                        <p>획수: ${name.analysis.strokes}</p>
+                        <div class="analysis-item">
+                            <span class="label">음양</span>
+                            <span class="value">${name.analysis.yinyang}</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="label">오행</span>
+                            <span class="value">${name.analysis.elements}</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="label">획수</span>
+                            <span class="value">${name.analysis.strokes}</span>
+                        </div>
                     </div>
                 </div>
             `).join('');
