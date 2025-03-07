@@ -5,12 +5,10 @@
 {% block extra_css %}
 <style>
     .hero-section {
-        background: linear-gradient(135deg, var(--primary-color), #357ABD);
+        background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
         color: white;
-        padding: 4rem 0;
-        margin-bottom: 3rem;
-        position: relative;
-        overflow: hidden;
+        padding: 100px 0;
+        margin-bottom: 50px;
     }
     
     .hero-section::before {
@@ -47,22 +45,18 @@
     }
     
     .cta-button {
-        display: inline-block;
-        padding: 1rem 2rem;
+        padding: 15px 40px;
         font-size: 1.2rem;
-        font-weight: 500;
-        color: var(--primary-color);
-        background: white;
-        border-radius: 50px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 30px;
+        background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+        border: none;
+        color: white;
+        transition: transform 0.3s;
     }
     
     .cta-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        color: var(--primary-color);
+        transform: scale(1.05);
+        color: white;
     }
     
     .features-section {
@@ -70,24 +64,20 @@
     }
     
     .feature-card {
-        background: white;
+        border: none;
         border-radius: 15px;
-        padding: 2rem;
-        text-align: center;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        height: 100%;
+        transition: transform 0.3s;
+        margin-bottom: 30px;
     }
     
     .feature-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
     }
     
     .feature-icon {
-        font-size: 3rem;
-        color: var(--primary-color);
-        margin-bottom: 1.5rem;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #000DFF;
     }
     
     .feature-title {
@@ -238,43 +228,84 @@
         <div class="col-md-8 text-center">
             <h1 class="display-4 mb-4">AI 작명소</h1>
             <p class="lead mb-4">
-                인공지능이 만드는 당신만의 특별한 이름
+                당신의 소중한 이름을 위한 최고의 선택
             </p>
-            <a href="{{ url_for('generate') }}" class="cta-button">
-                <i class="fas fa-magic me-2"></i>이름 생성하기
-            </a>
+            <a href="#generate" class="btn btn-light btn-lg">지금 시작하기</a>
         </div>
     </div>
 </div>
+
+<section id="generate" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">이름 생성하기</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="nameForm">
+                            <div class="mb-3">
+                                <label for="family_name" class="form-label">성</label>
+                                <input type="text" class="form-control" id="family_name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="gender" class="form-label">성별</label>
+                                <select class="form-select" id="gender" required>
+                                    <option value="">선택하세요</option>
+                                    <option value="남">남성</option>
+                                    <option value="여">여성</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="birth_year" class="form-label">출생년도</label>
+                                <input type="number" class="form-control" id="birth_year" min="1900" max="2100" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">이름 생성하기</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="loading">
+            <div class="spinner-border loading-spinner text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">이름을 생성하는 중입니다...</p>
+        </div>
+        <div id="results" class="mt-5" style="display: none;">
+            <h3 class="text-center mb-4">생성된 이름</h3>
+            <div class="row" id="nameResults"></div>
+        </div>
+    </div>
+</section>
 
 <section class="features-section">
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-robot feature-icon"></i>
+                        <h3>AI 기반 작명</h3>
+                        <p>최신 AI 기술을 활용하여 의미 있는 이름을 생성합니다.</p>
                     </div>
-                    <h3 class="feature-title">AI 기반 분석</h3>
-                    <p class="feature-description">최신 AI 기술을 활용하여 이름의 운세와 의미를 정확하게 분석합니다.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-magic feature-icon"></i>
+                        <h3>다양한 옵션</h3>
+                        <p>성별, 출생년도 등 다양한 조건을 반영한 이름을 생성합니다.</p>
                     </div>
-                    <h3 class="feature-title">운세 점수</h3>
-                    <p class="feature-description">이름의 운세를 100점 만점으로 평가하여 최적의 이름을 추천합니다.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-file-pdf"></i>
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shield-alt feature-icon"></i>
+                        <h3>무료 이용</h3>
+                        <p>모든 기능을 무료로 이용할 수 있습니다.</p>
                     </div>
-                    <h3 class="feature-title">상세 리포트</h3>
-                    <p class="feature-description">생성된 이름에 대한 상세한 분석 리포트를 PDF로 다운로드할 수 있습니다.</p>
                 </div>
             </div>
         </div>
@@ -383,5 +414,188 @@
             }
         });
     });
+
+    // 한자 데이터
+    const hanjaData = {
+        '민': { meaning: '민첩하고 똑똑한', stroke: 5 },
+        '준': { meaning: '준수하고 뛰어난', stroke: 10 },
+        '서': { meaning: '서로 돕고 협력하는', stroke: 6 },
+        '지': { meaning: '지혜롭고 현명한', stroke: 8 },
+        '도': { meaning: '도움을 주는', stroke: 7 },
+        '현': { meaning: '현명하고 지혜로운', stroke: 8 },
+        '우': { meaning: '우수하고 뛰어난', stroke: 6 },
+        '연': { meaning: '연약하고 부드러운', stroke: 7 },
+        '은': { meaning: '은혜로운', stroke: 9 },
+        '윤': { meaning: '윤택하고 풍요로운', stroke: 8 },
+        '호': { meaning: '호기심 많고 탐구하는', stroke: 7 },
+        '수': { meaning: '수려하고 아름다운', stroke: 6 },
+        '영': { meaning: '영원하고 빛나는', stroke: 8 },
+        '진': { meaning: '진실되고 성실한', stroke: 9 },
+        '성': { meaning: '성공하고 번영하는', stroke: 7 }
+    };
+
+    // 이름 생성 로직
+    const nameForm = document.getElementById('nameForm');
+    const results = document.getElementById('results');
+    const nameResults = document.getElementById('nameResults');
+    const loading = document.querySelector('.loading');
+
+    nameForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const familyName = document.getElementById('family_name').value;
+        const gender = document.getElementById('gender').value;
+        const birthYear = document.getElementById('birth_year').value;
+
+        // 로딩 표시
+        loading.style.display = 'block';
+        results.style.display = 'none';
+        nameResults.innerHTML = '';
+
+        // 비동기로 이름 생성
+        setTimeout(() => {
+            const names = generateNames(familyName, gender, birthYear);
+            displayResults(names);
+            loading.style.display = 'none';
+        }, 1000);
+    });
+
+    function generateNames(familyName, gender, birthYear) {
+        const names = [];
+        const maleNames = ['민준', '서준', '도윤', '지호', '준호', '현우', '지우', '서진', '도현', '준서'];
+        const femaleNames = ['서연', '지우', '서현', '민서', '지민', '하은', '서은', '지은', '서윤', '지현'];
+
+        const nameList = gender === '남' ? maleNames : femaleNames;
+        
+        for (let i = 0; i < 5; i++) {
+            const randomName = nameList[Math.floor(Math.random() * nameList.length)];
+            const fullName = familyName + randomName;
+            const meaning = getMeaning(randomName);
+            const score = calculateScore(randomName, birthYear);
+
+            names.push({
+                name: fullName,
+                hanja: randomName,
+                meaning: meaning,
+                score: score,
+                analysis: generateAnalysis(randomName, birthYear)
+            });
+        }
+
+        return names;
+    }
+
+    function getMeaning(name) {
+        let meaning = '';
+        for (let char of name) {
+            meaning += hanjaData[char]?.meaning || char;
+        }
+        return meaning;
+    }
+
+    function calculateScore(name, birthYear) {
+        let score = 70; // 기본 점수
+        let totalStrokes = 0;
+
+        // 한자 획수 계산
+        for (let char of name) {
+            totalStrokes += hanjaData[char]?.stroke || 0;
+        }
+
+        // 출생년도와 한자 획수의 조화도 계산
+        const yearLastDigit = birthYear % 10;
+        const strokeHarmony = Math.abs(totalStrokes - yearLastDigit * 2);
+        score += (10 - strokeHarmony) * 2;
+
+        // 점수 범위 조정 (70-100)
+        return Math.min(100, Math.max(70, score));
+    }
+
+    function generateAnalysis(name, birthYear) {
+        const analysis = [];
+        const yearLastDigit = birthYear % 10;
+        const totalStrokes = name.split('').reduce((sum, char) => sum + (hanjaData[char]?.stroke || 0), 0);
+
+        // 한자 분석
+        for (let char of name) {
+            const hanja = hanjaData[char];
+            if (hanja) {
+                analysis.push(`${char}: ${hanja.meaning} (획수: ${hanja.stroke})`);
+            }
+        }
+
+        // 운세 분석
+        if (totalStrokes % 2 === 0) {
+            analysis.push('음양 조화가 잘 맞는 이름입니다.');
+        } else {
+            analysis.push('독특한 개성을 가진 이름입니다.');
+        }
+
+        // 출생년도와의 관계
+        if (Math.abs(totalStrokes - yearLastDigit * 2) <= 2) {
+            analysis.push('출생년도와 조화로운 이름입니다.');
+        }
+
+        return analysis;
+    }
+
+    function displayResults(names) {
+        nameResults.innerHTML = '';
+        results.style.display = 'block';
+
+        names.forEach(name => {
+            const col = document.createElement('div');
+            col.className = 'col-md-6 mb-4';
+            col.innerHTML = `
+                <div class="card h-100 name-card">
+                    <div class="card-body">
+                        <h4 class="card-title">${name.name}</h4>
+                        <p class="card-text">
+                            <strong>한자:</strong> ${name.hanja}<br>
+                            <strong>의미:</strong> ${name.meaning}<br>
+                            <strong>운세 점수:</strong> ${name.score}점
+                        </p>
+                        <div class="analysis-section">
+                            <h5>이름 분석</h5>
+                            <ul class="list-unstyled">
+                                ${name.analysis.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <button class="btn btn-outline-primary" onclick="downloadPDF('${name.name}', '${name.hanja}', '${name.meaning}', ${name.score}, ${JSON.stringify(name.analysis)})">
+                            PDF 다운로드
+                        </button>
+                    </div>
+                </div>
+            `;
+            nameResults.appendChild(col);
+        });
+    }
+
+    function downloadPDF(name, hanja, meaning, score, analysis) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        doc.setFontSize(20);
+        doc.text('이름 분석 결과', 20, 20);
+        
+        doc.setFontSize(12);
+        doc.text(`이름: ${name}`, 20, 40);
+        doc.text(`한자: ${hanja}`, 20, 50);
+        doc.text(`의미: ${meaning}`, 20, 60);
+        doc.text(`운세 점수: ${score}점`, 20, 70);
+        
+        doc.setFontSize(14);
+        doc.text('이름 분석', 20, 90);
+        doc.setFontSize(12);
+        
+        const analysisList = JSON.parse(analysis);
+        let y = 100;
+        analysisList.forEach(item => {
+            doc.text(`• ${item}`, 20, y);
+            y += 10;
+        });
+        
+        doc.save(`${name}_분석.pdf`);
+    }
 </script>
 {% endblock %} 
