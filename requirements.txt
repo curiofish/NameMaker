@@ -9,3 +9,4 @@ itsdangerous==2.0.1
 MarkupSafe==2.0.1
 Pillow==9.5.0
 SQLAlchemy==1.4.23
+python-dateutil==2.8.2
