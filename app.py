@@ -225,15 +225,15 @@ def download_report(name_id):
         pdf.add_page()
         
         # Add Korean font support
-        pdf.add_font('NanumGothic', '', 'static/fonts/NanumGothic.ttf', uni=True)
-        pdf.set_font('NanumGothic', '', 16)
+        pdf.add_font('NotoSansKR', '', 'static/fonts/NotoSansKR-Regular.ttf', uni=True)
+        pdf.set_font('NotoSansKR', '', 16)
         
         # Title
         pdf.cell(0, 10, '이름 분석 리포트', ln=True, align='C')
         pdf.ln(10)
         
         # Name information
-        pdf.set_font('NanumGothic', '', 12)
+        pdf.set_font('NotoSansKR', '', 12)
         pdf.cell(0, 10, f'생성된 이름: {name_data["name"]}', ln=True)
         pdf.cell(0, 10, f'성별: {name_data["gender"]}', ln=True)
         pdf.cell(0, 10, f'생년월일: {name_data["birth_date"]}', ln=True)
@@ -241,7 +241,7 @@ def download_report(name_id):
         pdf.ln(10)
         
         # Meaning
-        pdf.set_font('NanumGothic', '', 10)
+        pdf.set_font('NotoSansKR', '', 10)
         pdf.multi_cell(0, 10, f'이름의 의미:\n{name_data["meaning"]}')
         pdf.ln(10)
         
