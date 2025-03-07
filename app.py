@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import os
+import sys
 from model.database import init_db, create_user, authenticate_user, save_name, get_user_names, get_name_by_id
 from model.name_generator import generate_name
 from functools import wraps
@@ -21,23 +22,55 @@ app.permanent_session_lifetime = timedelta(days=1)  # 세션 유효 기간 설�
 # Set database path to tmp directory for Heroku
 db_path = os.path.join('/tmp', 'namemaker.db')
 
-# Initialize database
+def get_db():
+    """데이터베이스 연결을 반환하는 함수"""
+    try:
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        return conn
+    except Exception as e:
+        app.logger.error(f"Database connection error: {str(e)}")
+        return None
+
 def init_db():
-    conn = sqlite3.connect(db_path)
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS names
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  name TEXT NOT NULL,
-                  gender TEXT NOT NULL,
-                  birth_date TEXT NOT NULL,
-                  fortune_score INTEGER NOT NULL,
-                  analysis TEXT NOT NULL,
-                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
-    conn.commit()
-    conn.close()
+    """데이터베이스 초기화 함수"""
+    try:
+        conn = get_db()
+        if conn is None:
+            app.logger.error("Could not initialize database: connection failed")
+            return False
+            
+        c = conn.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS users
+                    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     username TEXT UNIQUE NOT NULL,
+                     password TEXT NOT NULL,
+                     email TEXT NOT NULL,
+                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+                     
+        c.execute('''CREATE TABLE IF NOT EXISTS names
+                    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     user_id INTEGER,
+                     name TEXT NOT NULL,
+                     gender TEXT NOT NULL,
+                     birth_date TEXT NOT NULL,
+                     fortune_score INTEGER NOT NULL,
+                     analysis TEXT NOT NULL,
+                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                     FOREIGN KEY (user_id) REFERENCES users (id))''')
+        
+        conn.commit()
+        conn.close()
+        app.logger.info("Database initialized successfully")
+        return True
+    except Exception as e:
+        app.logger.error(f"Database initialization error: {str(e)}")
+        return False
 
 # Initialize database on startup
-init_db()
+if not init_db():
+    app.logger.error("Failed to initialize database")
+    sys.exit(1)
 
 def login_required(f):
     """로그인이 필요한 라우트를 위한 데코레이터"""
@@ -152,40 +185,20 @@ def dashboard():
 def generate():
     """이름 생성"""
     if request.method == 'POST':
-        family_name = request.form.get('family_name')
-        gender = request.form.get('gender')
-        birth_year = request.form.get('birth_year')
-        num_names = request.form.get('num_names', '5')
-        
-        # 입력값 검증
-        if not family_name or not gender or not birth_year:
-            flash('모든 필드를 입력해주세요.', 'error')
-            return redirect(url_for('generate'))
-        
         try:
-            birth_year = int(birth_year)
-            if birth_year < 1900 or birth_year > 2100:
-                flash('올바른 출생년도를 입력해주세요.', 'error')
-                return redirect(url_for('generate'))
-        except ValueError:
-            flash('올바른 출생년도를 입력해주세요.', 'error')
-            return redirect(url_for('generate'))
-        
-        try:
-            num_names = int(num_names)
-            if num_names not in [3, 5, 10]:
-                flash('올바른 이름 개수를 선택해주세요.', 'error')
-                return redirect(url_for('generate'))
-        except ValueError:
-            flash('올바른 이름 개수를 선택해주세요.', 'error')
-            return redirect(url_for('generate'))
-        
-        try:
-            names = generate_name(family_name, gender, birth_year, num_names)
+            family_name = request.form.get('family_name', '')
+            gender = request.form.get('gender', '')
+            birth_year = request.form.get('birth_year', '')
+            
+            app.logger.info(f"Generating names for: {family_name}, {gender}, {birth_year}")
+            
+            names = generate_name(family_name, gender, int(birth_year), 5)
             return render_template('generate.html', names=names)
+            
         except Exception as e:
+            app.logger.error(f"Name generation error: {str(e)}")
             flash('이름 생성 중 오류가 발생했습니다.', 'error')
-            return redirect(url_for('generate'))
+            return render_template('generate.html', error=str(e))
     
     return render_template('generate.html')
 

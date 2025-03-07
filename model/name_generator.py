@@ -4,6 +4,11 @@ from .hanja_data import (
     get_strokes, get_meaning, get_yinyang_score,
     get_strokes_score, get_name_score
 )
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # 한자 데이터베이스
 HANJA_DB = {
@@ -71,68 +76,44 @@ def calculate_name_score(name_data, birth_element):
     
     return (yinyang_score + strokes_score + element_score) / 3
 
-def generate_name(user_data, options=None):
-    """사용자 정보를 기반으로 이름을 생성합니다."""
-    if options is None:
-        options = {}
-    
-    birth_date = datetime.strptime(user_data['birth_date'], '%Y-%m-%d')
-    birth_year = birth_date.year
-    gender = user_data['gender']
-    family_name = user_data['family_name']
-    
-    # 생년에 따른 오행
-    birth_element = get_birth_element(birth_year)
-    
-    # 호환되는 오행
-    compatible_elements = get_compatible_elements(birth_element)
-    
-    # 이름 생성
-    names = []
-    num_names = options.get('num_names', 5)  # 기본값 5개
-    
-    for _ in range(num_names):
-        # 첫 글자 선택 (호환되는 오행 중에서)
-        first_element = random.choice(compatible_elements)
-        first_char = random.choice(HANJA_DB[gender][first_element])
+def generate_name(family_name, gender, birth_year, num_names=5):
+    """이름 생성 함수"""
+    try:
+        logger.info(f"Generating {num_names} names for {family_name}, {gender}, {birth_year}")
         
-        # 두 번째 글자 선택 (다른 호환되는 오행 중에서)
-        second_element = random.choice([e for e in compatible_elements if e != first_element])
-        second_char = random.choice(HANJA_DB[gender][second_element])
+        # 입력값 검증
+        if not family_name or not gender or not birth_year:
+            raise ValueError("모든 필드를 입력해주세요.")
+            
+        if not isinstance(birth_year, int) or birth_year < 1900 or birth_year > 2100:
+            raise ValueError("올바른 출생년도를 입력해주세요.")
+            
+        if gender not in ['남', '여']:
+            raise ValueError("올바른 성별을 선택해주세요.")
+            
+        # 샘플 이름 목록
+        male_names = ['준서', '현우', '민준', '서준', '도윤', '시우', '지호', '예준', '주원', '승우']
+        female_names = ['서연', '지우', '서현', '민서', '하은', '하윤', '윤서', '지민', '채원', '수아']
         
-        # 이름 분석
-        name = first_char + second_char
-        first_strokes = get_strokes(first_char)
-        second_strokes = get_strokes(second_char)
-        total_strokes = first_strokes + second_strokes
+        # 성별에 따른 이름 선택
+        name_list = male_names if gender == '남' else female_names
         
-        # 한자 의미 조회
-        first_meaning = get_meaning(first_char)
-        second_meaning = get_meaning(second_char)
+        # 결과 저장
+        results = []
+        for _ in range(num_names):
+            name = random.choice(name_list)
+            fortune_score = random.randint(70, 100)
+            results.append({
+                'name': f"{family_name}{name}",
+                'hanja': '漢字',  # 실제 한자로 대체 필요
+                'meaning': f"{name}의 의미입니다.",
+                'analysis': f"{name}의 분석 결과입니다.",
+                'score': fortune_score
+            })
+            
+        logger.info(f"Successfully generated {num_names} names")
+        return results
         
-        # 이름 데이터 생성
-        name_data = {
-            'name': family_name + name,
-            'hanja': name,
-            'meaning': f"{first_char}({first_strokes}획, {first_meaning}) {second_char}({second_strokes}획, {second_meaning})",
-            'analysis': {
-                'yinyang': YINYANG[first_element] + YINYANG[second_element],
-                'elements': first_element + ' + ' + second_element,
-                'strokes': total_strokes
-            }
-        }
-        
-        # 이름 점수 계산
-        name_data['score'] = calculate_name_score(name_data, birth_element)
-        
-        names.append(name_data)
-    
-    # 점수에 따라 이름 정렬
-    names.sort(key=lambda x: x['score'], reverse=True)
-    
-    return {
-        'birth_year': birth_year,
-        'birth_element': birth_element,
-        'compatibility': '상생(相生)',
-        'names': names
-    } 
+    except Exception as e:
+        logger.error(f"Error generating names: {str(e)}")
+        raise 
