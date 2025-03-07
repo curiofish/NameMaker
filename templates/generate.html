@@ -1,0 +1,518 @@
+{% extends "base.html" %}
+
+{% block title %}무료 작명소 - 이름 생성{% endblock %}
+
+{% block extra_css %}
+<style>
+    .generate-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .generate-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .generate-title {
+        font-size: 2rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .generate-subtitle {
+        color: #6C757D;
+        font-size: 1.1rem;
+    }
+    
+    .form-section {
+        background: #F8F9FA;
+        border-radius: 10px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .form-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-title i {
+        margin-right: 0.5rem;
+        color: var(--primary-color);
+    }
+    
+    .gender-selector {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .gender-option {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid #E9ECEF;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .gender-option:hover {
+        border-color: var(--primary-color);
+        background: #F8F9FA;
+    }
+    
+    .gender-option.selected {
+        border-color: var(--primary-color);
+        background: rgba(74, 144, 226, 0.1);
+    }
+    
+    .gender-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .gender-label {
+        font-weight: 500;
+        color: var(--secondary-color);
+    }
+    
+    .number-selector {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .number-option {
+        flex: 1;
+        padding: 0.75rem;
+        border: 2px solid #E9ECEF;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        font-weight: 500;
+    }
+    
+    .number-option:hover {
+        border-color: var(--primary-color);
+        background: #F8F9FA;
+    }
+    
+    .number-option.selected {
+        border-color: var(--primary-color);
+        background: rgba(74, 144, 226, 0.1);
+        color: var(--primary-color);
+    }
+    
+    .generate-btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: white;
+        background: var(--primary-color);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .generate-btn:hover {
+        background: #357ABD;
+        transform: translateY(-2px);
+    }
+    
+    .generate-btn:disabled {
+        background: #6C757D;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .results-section {
+        margin-top: 3rem;
+    }
+    
+    .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .results-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+    
+    .results-count {
+        color: #6C757D;
+        font-size: 1.1rem;
+    }
+    
+    .name-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .name-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .name-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .name-text {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+    
+    .name-score {
+        background: var(--primary-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+    }
+    
+    .name-details {
+        margin-bottom: 1rem;
+    }
+    
+    .detail-item {
+        display: flex;
+        margin-bottom: 0.5rem;
+    }
+    
+    .detail-label {
+        width: 100px;
+        color: #6C757D;
+        font-weight: 500;
+    }
+    
+    .detail-value {
+        flex: 1;
+        color: var(--secondary-color);
+    }
+    
+    .name-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .action-btn {
+        flex: 1;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .save-btn {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .save-btn:hover {
+        background: #357ABD;
+    }
+    
+    .download-btn {
+        background: #F8F9FA;
+        color: var(--secondary-color);
+    }
+    
+    .download-btn:hover {
+        background: #E9ECEF;
+    }
+    
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255,255,255,0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #F8F9FA;
+        border-top-color: var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6C757D;
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #DEE2E6;
+    }
+    
+    @media (max-width: 768px) {
+        .generate-container {
+            margin: 1rem;
+            padding: 1rem;
+        }
+        
+        .gender-selector {
+            flex-direction: column;
+        }
+        
+        .number-selector {
+            flex-wrap: wrap;
+        }
+        
+        .number-option {
+            flex: 1 1 calc(50% - 0.5rem);
+        }
+        
+        .name-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="generate-container">
+    <div class="generate-header">
+        <h1 class="generate-title">이름 생성하기</h1>
+        <p class="generate-subtitle">AI가 분석한 운세와 의미를 바탕으로 최적의 이름을 추천해드립니다</p>
+    </div>
+    
+    <form id="generateForm" method="POST" action="{{ url_for('generate') }}">
+        <div class="form-section">
+            <h2 class="form-title">
+                <i class="fas fa-user"></i>
+                기본 정보 입력
+            </h2>
+            
+            <div class="gender-selector">
+                <div class="gender-option" data-gender="male">
+                    <div class="gender-icon">
+                        <i class="fas fa-mars"></i>
+                    </div>
+                    <div class="gender-label">남자</div>
+                    <input type="radio" name="gender" value="male" required style="display: none;">
+                </div>
+                <div class="gender-option" data-gender="female">
+                    <div class="gender-icon">
+                        <i class="fas fa-venus"></i>
+                    </div>
+                    <div class="gender-label">여자</div>
+                    <input type="radio" name="gender" value="female" required style="display: none;">
+                </div>
+            </div>
+            
+            <div class="form-title">
+                <i class="fas fa-hashtag"></i>
+                생성할 이름 개수
+            </div>
+            
+            <div class="number-selector">
+                <div class="number-option" data-number="1">1개</div>
+                <div class="number-option" data-number="3">3개</div>
+                <div class="number-option" data-number="5">5개</div>
+                <div class="number-option" data-number="10">10개</div>
+                <input type="hidden" name="count" value="1" required>
+            </div>
+            
+            <button type="submit" class="generate-btn">
+                <i class="fas fa-magic"></i>
+                이름 생성하기
+            </button>
+        </div>
+    </form>
+    
+    <div class="results-section" id="resultsSection" style="display: none;">
+        <div class="results-header">
+            <h2 class="results-title">생성된 이름</h2>
+            <div class="results-count">총 <span id="resultCount">0</span>개</div>
+        </div>
+        
+        <div id="nameList">
+            <!-- 이름 카드들이 여기에 동적으로 추가됩니다 -->
+        </div>
+    </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-spinner"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 성별 선택
+    $('.gender-option').click(function() {
+        $('.gender-option').removeClass('selected');
+        $(this).addClass('selected');
+        $(this).find('input[type="radio"]').prop('checked', true);
+    });
+    
+    // 이름 개수 선택
+    $('.number-option').click(function() {
+        $('.number-option').removeClass('selected');
+        $(this).addClass('selected');
+        $('input[name="count"]').val($(this).data('number'));
+    });
+    
+    // 기본값 설정
+    $('.gender-option[data-gender="male"]').click();
+    $('.number-option[data-number="1"]').click();
+    
+    // 폼 제출
+    $('#generateForm').submit(function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            gender: $('input[name="gender"]:checked').val(),
+            count: $('input[name="count"]').val()
+        };
+        
+        // 로딩 표시
+        $('#loadingOverlay').show();
+        
+        // AJAX 요청
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.status === 'success') {
+                    displayResults(response.names);
+                    $('#resultsSection').show();
+                } else {
+                    showToast('error', response.message);
+                }
+            },
+            error: function() {
+                showToast('error', '이름 생성 중 오류가 발생했습니다.');
+            },
+            complete: function() {
+                $('#loadingOverlay').hide();
+            }
+        });
+    });
+    
+    // 결과 표시
+    function displayResults(names) {
+        const $nameList = $('#nameList');
+        $nameList.empty();
+        
+        names.forEach((name, index) => {
+            const nameCard = `
+                <div class="name-card">
+                    <div class="name-header">
+                        <div class="name-text">${name.name}</div>
+                        <div class="name-score">${name.score}점</div>
+                    </div>
+                    <div class="name-details">
+                        <div class="detail-item">
+                            <div class="detail-label">한자</div>
+                            <div class="detail-value">${name.hanja}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">의미</div>
+                            <div class="detail-value">${name.meaning}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">운세</div>
+                            <div class="detail-value">${name.fortune}</div>
+                        </div>
+                    </div>
+                    <div class="name-actions">
+                        <button class="action-btn save-btn" onclick="saveName(${index})">
+                            <i class="fas fa-bookmark"></i>
+                            저장하기
+                        </button>
+                        <button class="action-btn download-btn" onclick="downloadReport(${index})">
+                            <i class="fas fa-download"></i>
+                            리포트 다운로드
+                        </button>
+                    </div>
+                </div>
+            `;
+            $nameList.append(nameCard);
+        });
+        
+        $('#resultCount').text(names.length);
+    }
+    
+    // 이름 저장
+    function saveName(index) {
+        const name = names[index];
+        
+        $.ajax({
+            url: '/save_name',
+            method: 'POST',
+            data: name,
+            success: function(response) {
+                if (response.status === 'success') {
+                    showToast('success', '이름이 저장되었습니다.');
+                } else {
+                    showToast('error', response.message);
+                }
+            },
+            error: function() {
+                showToast('error', '이름 저장 중 오류가 발생했습니다.');
+            }
+        });
+    }
+    
+    // 리포트 다운로드
+    function downloadReport(index) {
+        const name = names[index];
+        window.location.href = `/download_report/${name.id}`;
+    }
+</script>
+{% endblock %} 

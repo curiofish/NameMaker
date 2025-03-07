@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}프로필 - 무료 작명소{% endblock %}
+
+{% block header_title %}내 프로필{% endblock %}
+
+{% block header_subtitle %}{{ user.username }}님의 프로필{% endblock %}
+
+{% block content %}
+<main>
+    <div class="profile-section">
+        <h2>기본 정보</h2>
+        <div class="profile-info">
+            <div class="info-item">
+                <span class="label">사용자명</span>
+                <span class="value">{{ user.username }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">이메일</span>
+                <span class="value">{{ user.email }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">가입일</span>
+                <span class="value">{{ user.created_at[:10] }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-section">
+        <h2>저장된 이름 목록</h2>
+        <div class="saved-names-list">
+            {% for name in saved_names %}
+            <div class="saved-name-card">
+                <div class="name-header">
+                    <h3>{{ name.name }}</h3>
+                    <span class="saved-date">{{ name.created_at[:10] }}</span>
+                </div>
+                <div class="name-details">
+                    <p class="hanja">한자: {{ name.hanja }}</p>
+                    <p class="meaning">의미: {{ name.meaning }}</p>
+                </div>
+                <div class="analysis">
+                    <div class="analysis-item">
+                        <span class="label">음양</span>
+                        <span class="value">{{ name.yinyang }}</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span class="label">오행</span>
+                        <span class="value">{{ name.elements }}</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span class="label">획수</span>
+                        <span class="value">{{ name.strokes }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{{ url_for('main.index') }}" class="button">홈으로 돌아가기</a>
+        <a href="{{ url_for('main.logout') }}" class="button logout-button">로그아웃</a>
+    </div>
+</main>
+{% endblock %} 

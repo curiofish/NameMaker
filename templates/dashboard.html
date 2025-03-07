@@ -1,0 +1,856 @@
+{% extends "base.html" %}
+
+{% block title %}무료 작명소 - 내 이름 관리{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #4A90E2, #357ABD);
+        --card-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        --hover-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --bg-color: #F8F9FA;
+        --text-color: #212529;
+        --card-bg: #FFFFFF;
+        --border-color: #E9ECEF;
+    }
+    
+    [data-theme="dark"] {
+        --bg-color: #1A1A1A;
+        --text-color: #FFFFFF;
+        --card-bg: #2D2D2D;
+        --border-color: #404040;
+    }
+    
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        background: var(--bg-color);
+        min-height: 100vh;
+        color: var(--text-color);
+    }
+    
+    .dashboard-header {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+        background-size: cover;
+        opacity: 0.1;
+    }
+    
+    .welcome-text {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+    }
+    
+    .welcome-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .welcome-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+    
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        text-align: center;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+        opacity: 0;
+        transition: var(--transition);
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+    }
+    
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+    
+    .stat-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+    }
+    
+    .stat-card:hover .stat-icon {
+        transform: scale(1.1);
+    }
+    
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+        line-height: 1;
+    }
+    
+    .stat-label {
+        color: #6C757D;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+    
+    .dashboard-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .action-button {
+        flex: 1;
+        padding: 1.2rem;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        text-decoration: none;
+    }
+    
+    .generate-btn {
+        background: var(--primary-gradient);
+        color: white;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .generate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--hover-shadow);
+    }
+    
+    .filter-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+    }
+    
+    .filter-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    
+    .filter-title::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: var(--primary-gradient);
+        border-radius: 2px;
+    }
+    
+    .filter-options {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .filter-option {
+        padding: 0.8rem 1.5rem;
+        border: 2px solid #E9ECEF;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: var(--transition);
+        color: #6C757D;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+    
+    .filter-option:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+    
+    .filter-option.active {
+        background: var(--primary-gradient);
+        border-color: transparent;
+        color: white;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .names-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .name-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .name-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+        opacity: 0;
+        transition: var(--transition);
+    }
+    
+    .name-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+    }
+    
+    .name-card:hover::before {
+        opacity: 1;
+    }
+    
+    .name-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .name-text {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+        line-height: 1.2;
+    }
+    
+    .name-score {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+    }
+    
+    .name-details {
+        margin-bottom: 1.5rem;
+    }
+    
+    .detail-item {
+        display: flex;
+        margin-bottom: 1rem;
+        padding: 0.8rem;
+        background: #F8F9FA;
+        border-radius: 10px;
+        transition: var(--transition);
+    }
+    
+    .detail-item:hover {
+        background: #F1F3F5;
+    }
+    
+    .detail-label {
+        width: 80px;
+        color: #6C757D;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    
+    .detail-value {
+        flex: 1;
+        color: var(--secondary-color);
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .name-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .action-btn {
+        flex: 1;
+        padding: 1rem;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        text-decoration: none;
+    }
+    
+    .download-btn {
+        background: #F8F9FA;
+        color: var(--secondary-color);
+    }
+    
+    .download-btn:hover {
+        background: #E9ECEF;
+        transform: translateY(-2px);
+    }
+    
+    .delete-btn {
+        background: #FFF5F5;
+        color: #DC3545;
+    }
+    
+    .delete-btn:hover {
+        background: #FFE5E5;
+        transform: translateY(-2px);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .empty-icon {
+        font-size: 4rem;
+        color: #DEE2E6;
+        margin-bottom: 1.5rem;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .empty-text {
+        color: #6C757D;
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 3rem;
+    }
+    
+    .page-btn {
+        width: 45px;
+        height: 45px;
+        border: 2px solid #E9ECEF;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        color: var(--secondary-color);
+        font-weight: 600;
+        text-decoration: none;
+    }
+    
+    .page-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+    
+    .page-btn.active {
+        background: var(--primary-gradient);
+        border-color: transparent;
+        color: white;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .search-section {
+        background: var(--card-bg);
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .search-input {
+        flex: 1;
+        padding: 0.8rem 1.2rem;
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 1rem;
+        background: var(--bg-color);
+        color: var(--text-color);
+        transition: var(--transition);
+    }
+    
+    .search-input:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+    
+    .sort-select {
+        padding: 0.8rem 1.2rem;
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 1rem;
+        background: var(--bg-color);
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .sort-select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+    
+    .theme-toggle {
+        padding: 0.8rem;
+        border: none;
+        border-radius: 10px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .theme-toggle:hover {
+        background: var(--border-color);
+    }
+    
+    .name-date {
+        font-size: 0.9rem;
+        color: #6C757D;
+        margin-top: 0.5rem;
+    }
+    
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+    }
+    
+    .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid var(--border-color);
+        border-top-color: var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-container {
+            padding: 1rem;
+        }
+        
+        .dashboard-header {
+            padding: 2rem 1.5rem;
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+        }
+        
+        .dashboard-actions {
+            flex-direction: column;
+        }
+        
+        .filter-options {
+            flex-direction: column;
+        }
+        
+        .filter-option {
+            text-align: center;
+        }
+        
+        .names-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .name-card {
+            padding: 1.5rem;
+        }
+        
+        .name-text {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div class="welcome-text">
+            <h1 class="welcome-title">안녕하세요, {{ user.username }}님!</h1>
+            <p class="welcome-subtitle">AI가 분석한 운세와 의미를 바탕으로 저장하신 이름들을 효율적으로 관리해보세요</p>
+        </div>
+    </div>
+    
+    <div class="search-section">
+        <input type="text" class="search-input" placeholder="이름 검색..." id="searchInput">
+        <select class="sort-select" id="sortSelect">
+            <option value="date-desc">최신순</option>
+            <option value="date-asc">오래된순</option>
+            <option value="score-desc">운세 높은순</option>
+            <option value="score-asc">운세 낮은순</option>
+        </select>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+    
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-bookmark"></i>
+            </div>
+            <div class="stat-value">{{ total_names }}</div>
+            <div class="stat-label">저장된 이름</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-value">{{ avg_score|round(1) }}</div>
+            <div class="stat-label">평균 운세 점수</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-mars"></i>
+            </div>
+            <div class="stat-value">{{ male_count }}</div>
+            <div class="stat-label">남자 이름</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-venus"></i>
+            </div>
+            <div class="stat-value">{{ female_count }}</div>
+            <div class="stat-label">여자 이름</div>
+        </div>
+    </div>
+    
+    <div class="dashboard-actions">
+        <a href="{{ url_for('generate') }}" class="action-button generate-btn">
+            <i class="fas fa-magic"></i>
+            새로운 이름 생성하기
+        </a>
+    </div>
+    
+    <div class="filter-section">
+        <h2 class="filter-title">이름 필터</h2>
+        <div class="filter-options">
+            <div class="filter-option active" data-filter="all">전체</div>
+            <div class="filter-option" data-filter="male">남자</div>
+            <div class="filter-option" data-filter="female">여자</div>
+            <div class="filter-option" data-filter="high-score">높은 운세</div>
+        </div>
+    </div>
+    
+    {% if names %}
+    <div class="names-grid">
+        {% for name in names %}
+        <div class="name-card" data-gender="{{ name.gender }}" data-score="{{ name.score }}" data-date="{{ name.created_at }}">
+            <div class="name-header">
+                <div class="name-text">{{ name.name }}</div>
+                <div class="name-score">{{ "%.1f"|format(name.score) }}점</div>
+            </div>
+            <div class="name-details">
+                <div class="detail-item">
+                    <div class="detail-label">한자</div>
+                    <div class="detail-value">{{ name.hanja }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">의미</div>
+                    <div class="detail-value">{{ name.meaning }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">운세</div>
+                    <div class="detail-value">{{ name.fortune }}</div>
+                </div>
+            </div>
+            <div class="name-actions">
+                <a href="{{ url_for('download_report', name_id=name.id) }}" class="action-btn download-btn">
+                    <i class="fas fa-download"></i>
+                    리포트
+                </a>
+                <button class="action-btn delete-btn" data-name-id="{{ name.id }}" onclick="deleteName(this.dataset.nameId)">
+                    <i class="fas fa-trash"></i>
+                    삭제
+                </button>
+            </div>
+            <div class="name-date">
+                <i class="far fa-calendar-alt"></i>
+                {{ name.created_at.split('T')[0] }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="pagination">
+        {% for page in range(1, total_pages + 1) %}
+        <a href="{{ url_for('dashboard', page=page) }}" class="page-btn {% if page == current_page %}active{% endif %}">
+            {{ page }}
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-bookmark"></i>
+        </div>
+        <div class="empty-text">아직 저장된 이름이 없습니다<br>새로운 이름을 생성해보세요</div>
+        <a href="{{ url_for('generate') }}" class="action-button generate-btn">
+            <i class="fas fa-magic"></i>
+            이름 생성하기
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-spinner"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 필터 기능
+    $('.filter-option').click(function() {
+        $('.filter-option').removeClass('active');
+        $(this).addClass('active');
+        
+        const filter = $(this).data('filter');
+        filterNames(filter);
+    });
+    
+    function filterNames(filter) {
+        $('.name-card').each(function() {
+            const $card = $(this);
+            const gender = $card.data('gender');
+            const score = $card.data('score');
+            
+            let show = true;
+            switch(filter) {
+                case 'male':
+                    show = gender === 'male';
+                    break;
+                case 'female':
+                    show = gender === 'female';
+                    break;
+                case 'high-score':
+                    show = score >= 90;
+                    break;
+            }
+            
+            $card.toggle(show);
+        });
+        
+        // 빈 상태 표시
+        const visibleCards = $('.name-card:visible').length;
+        if (visibleCards === 0) {
+            $('.names-grid').html(`
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="empty-text">해당하는 이름이 없습니다</div>
+                </div>
+            `);
+        }
+    }
+    
+    // 이름 삭제
+    function deleteName(nameId) {
+        if (confirm('이 이름을 삭제하시겠습니까?')) {
+            $.ajax({
+                url: `/delete_name/${nameId}`,
+                method: 'POST',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        $(`[data-name-id="${nameId}"]`).closest('.name-card').fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                        showToast('success', '이름이 삭제되었습니다.');
+                    } else {
+                        showToast('error', response.message);
+                    }
+                },
+                error: function() {
+                    showToast('error', '이름 삭제 중 오류가 발생했습니다.');
+                }
+            });
+        }
+    }
+    
+    // 검색 기능
+    $('#searchInput').on('input', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        $('.name-card').each(function() {
+            const name = $(this).find('.name-text').text().toLowerCase();
+            const hanja = $(this).find('.detail-value').first().text().toLowerCase();
+            const meaning = $(this).find('.detail-value').eq(1).text().toLowerCase();
+            
+            if (name.includes(searchTerm) || hanja.includes(searchTerm) || meaning.includes(searchTerm)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        
+        updateEmptyState();
+    });
+    
+    // 정렬 기능
+    $('#sortSelect').change(function() {
+        const sortBy = $(this).val();
+        const $grid = $('.names-grid');
+        const $cards = $('.name-card').get();
+        
+        $cards.sort(function(a, b) {
+            switch(sortBy) {
+                case 'date-desc':
+                    return new Date($(b).data('date')) - new Date($(a).data('date'));
+                case 'date-asc':
+                    return new Date($(a).data('date')) - new Date($(b).data('date'));
+                case 'score-desc':
+                    return $(b).data('score') - $(a).data('score');
+                case 'score-asc':
+                    return $(a).data('score') - $(b).data('score');
+            }
+        });
+        
+        $.each($cards, function(i, card) {
+            $grid.append(card);
+        });
+    });
+    
+    // 다크 모드 토글
+    const theme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeIcon(theme);
+    
+    $('#themeToggle').click(function() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+    });
+    
+    function updateThemeIcon(theme) {
+        const icon = $('#themeToggle i');
+        icon.removeClass('fa-moon fa-sun').addClass(theme === 'light' ? 'fa-moon' : 'fa-sun');
+    }
+    
+    // 빈 상태 업데이트
+    function updateEmptyState() {
+        const visibleCards = $('.name-card:visible').length;
+        if (visibleCards === 0) {
+            $('.names-grid').html(`
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="empty-text">검색 결과가 없습니다</div>
+                </div>
+            `);
+        }
+    }
+    
+    // 로딩 표시
+    function showLoading() {
+        $('#loadingOverlay').fadeIn(200);
+    }
+    
+    function hideLoading() {
+        $('#loadingOverlay').fadeOut(200);
+    }
+    
+    // AJAX 요청 시 로딩 표시
+    $(document).ajaxStart(showLoading).ajaxStop(hideLoading);
+</script>
+{% endblock %} 

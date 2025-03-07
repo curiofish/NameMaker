@@ -1,182 +1,385 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>무료 작명소</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}무료 작명소 - AI 기반 이름 생성 서비스{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color), #357ABD);
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+        background-size: cover;
+        opacity: 0.1;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+    
+    .cta-button {
+        display: inline-block;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--primary-color);
+        background: white;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        color: var(--primary-color);
+    }
+    
+    .features-section {
+        padding: 4rem 0;
+    }
+    
+    .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        height: 100%;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+    }
+    
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--secondary-color);
+    }
+    
+    .feature-description {
+        color: #6C757D;
+        line-height: 1.6;
+    }
+    
+    .how-it-works {
+        background: #F8F9FA;
+        padding: 4rem 0;
+    }
+    
+    .step-card {
+        position: relative;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin: 0 auto 1rem;
+    }
+    
+    .step-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--secondary-color);
+    }
+    
+    .step-description {
+        color: #6C757D;
+        line-height: 1.6;
+    }
+    
+    .testimonials-section {
+        padding: 4rem 0;
+    }
+    
+    .testimonial-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    .testimonial-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #495057;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+    }
+    
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+    }
+    
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 1rem;
+    }
+    
+    .author-info {
+        flex: 1;
+    }
+    
+    .author-name {
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+    
+    .author-title {
+        color: #6C757D;
+        font-size: 0.9rem;
+    }
+    
+    .stats-section {
+        background: var(--primary-color);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+    }
+    
+    .stat-item {
+        margin-bottom: 2rem;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .feature-card {
+            margin-bottom: 2rem;
+        }
+        
+        .step-card {
+            margin-bottom: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
     <div class="container">
-        <header>
-            <h1>무료 작명소</h1>
-            <p>전통적인 작명 원리로 이름을 지어보세요</p>
-        </header>
+        <div class="hero-content">
+            <h1 class="hero-title">AI가 만드는 특별한 이름</h1>
+            <p class="hero-subtitle">인공지능이 분석한 운세와 의미를 바탕으로 당신만의 특별한 이름을 만들어드립니다</p>
+            <a href="{{ url_for('generate') }}" class="cta-button">
+                <i class="fas fa-magic me-2"></i>이름 생성하기
+            </a>
+        </div>
+    </div>
+</section>
 
-        <main>
-            <form id="nameForm">
-                <div class="form-group">
-                    <label for="familyName">성씨</label>
-                    <input type="text" id="familyName" name="familyName" required>
+<section class="features-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">AI 기반 분석</h3>
+                    <p class="feature-description">최신 AI 기술을 활용하여 이름의 운세와 의미를 정확하게 분석합니다.</p>
                 </div>
-
-                <div class="form-group">
-                    <label for="gender">성별</label>
-                    <select id="gender" name="gender" required>
-                        <option value="">선택하세요</option>
-                        <option value="male">남자</option>
-                        <option value="female">여자</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="birthDate">생년월일</label>
-                    <input type="date" id="birthDate" name="birthDate" required>
-                </div>
-
-                <button type="submit">이름 생성하기</button>
-            </form>
-
-            <div id="results" class="hidden">
-                <h2>추천 이름</h2>
-                <div class="birth-info">
-                    <p>출생년도: <span id="birthYear"></span></p>
-                    <p>종합 길흉: <span id="compatibility"></span></p>
-                </div>
-                <div id="nameList"></div>
             </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">운세 점수</h3>
+                    <p class="feature-description">이름의 운세를 100점 만점으로 평가하여 최적의 이름을 추천합니다.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3 class="feature-title">상세 리포트</h3>
+                    <p class="feature-description">생성된 이름에 대한 상세한 분석 리포트를 PDF로 다운로드할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-            {% if saved_names %}
-            <div id="savedNames" class="saved-names">
-                <h2>최근 저장된 이름</h2>
-                <div class="saved-names-list">
-                    {% for name in saved_names %}
-                    <div class="saved-name-card">
-                        <div class="name-header">
-                            <h3>{{ name.name }}</h3>
-                            <span class="saved-date">{{ name.created_at[:10] }}</span>
-                        </div>
-                        <div class="name-details">
-                            <p class="hanja">한자: {{ name.hanja }}</p>
-                            <p class="meaning">의미: {{ name.meaning }}</p>
-                        </div>
-                        <div class="analysis">
-                            <div class="analysis-item">
-                                <span class="label">음양</span>
-                                <span class="value">{{ name.yinyang }}</span>
-                            </div>
-                            <div class="analysis-item">
-                                <span class="label">오행</span>
-                                <span class="value">{{ name.elements }}</span>
-                            </div>
-                            <div class="analysis-item">
-                                <span class="label">획수</span>
-                                <span class="value">{{ name.strokes }}</span>
-                            </div>
+<section class="how-it-works">
+    <div class="container">
+        <h2 class="text-center mb-5">이름 생성 과정</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">정보 입력</h3>
+                    <p class="step-description">성별과 원하는 이름 개수를 선택하고 이름 생성 버튼을 클릭합니다.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">AI 분석</h3>
+                    <p class="step-description">AI가 운세와 의미를 분석하여 최적의 이름을 생성합니다.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">결과 확인</h3>
+                    <p class="step-description">생성된 이름과 상세 분석 결과를 확인하고 저장할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials-section">
+    <div class="container">
+        <h2 class="text-center mb-5">사용자 후기</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="testimonial-card">
+                    <p class="testimonial-content">"AI가 생성한 이름이 정말 마음에 들었어요. 운세 점수도 높고 의미도 좋네요!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">김</div>
+                        <div class="author-info">
+                            <div class="author-name">김서연</div>
+                            <div class="author-title">신생아 엄마</div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
-            {% endif %}
-        </main>
-
-        <footer>
-            <p>Copyright © 2024 Curiofish (fishcurio@gmail.com)</p>
-        </footer>
+            <div class="col-md-6">
+                <div class="testimonial-card">
+                    <p class="testimonial-content">"PDF 리포트가 정말 상세해서 좋았어요. 이름 선택에 큰 도움이 되었습니다."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">이</div>
+                        <div class="author-info">
+                            <div class="author-name">이준호</div>
+                            <div class="author-title">아빠</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
 
-    <script>
-        document.getElementById('nameForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="stat-item">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">생성된 이름</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">만족도</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-item">
+                    <div class="stat-number">5,000+</div>
+                    <div class="stat-label">활성 사용자</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 스크롤 애니메이션
+    $(window).scroll(function() {
+        $('.feature-card, .step-card, .testimonial-card').each(function() {
+            var elementTop = $(this).offset().top;
+            var elementBottom = elementTop + $(this).outerHeight();
+            var viewportTop = $(window).scrollTop();
+            var viewportBottom = viewportTop + $(window).height();
             
-            const formData = {
-                family_name: document.getElementById('familyName').value,
-                gender: document.getElementById('gender').value,
-                birth_date: document.getElementById('birthDate').value
-            };
-
-            try {
-                const response = await fetch('/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-                displayResults(data, formData);
-            } catch (error) {
-                console.error('Error:', error);
+            if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                $(this).addClass('animate__animated animate__fadeInUp');
             }
         });
-
-        function displayResults(data, userData) {
-            const resultsDiv = document.getElementById('results');
-            const nameListDiv = document.getElementById('nameList');
-            
-            document.getElementById('birthYear').textContent = data.birth_year;
-            document.getElementById('compatibility').textContent = data.compatibility;
-            
-            nameListDiv.innerHTML = data.names.map((name, index) => `
-                <div class="name-card">
-                    <div class="name-header">
-                        <h3>${name.name}</h3>
-                        <span class="name-number">${index + 1}번째 추천</span>
-                    </div>
-                    <div class="name-details">
-                        <p class="hanja">한자: ${name.hanja}</p>
-                        <p class="meaning">의미: ${name.meaning}</p>
-                    </div>
-                    <div class="analysis">
-                        <div class="analysis-item">
-                            <span class="label">음양</span>
-                            <span class="value">${name.analysis.yinyang}</span>
-                        </div>
-                        <div class="analysis-item">
-                            <span class="label">오행</span>
-                            <span class="value">${name.analysis.elements}</span>
-                        </div>
-                        <div class="analysis-item">
-                            <span class="label">획수</span>
-                            <span class="value">${name.analysis.strokes}</span>
-                        </div>
-                    </div>
-                    <button class="save-button" onclick="saveName(${JSON.stringify(name)}, ${JSON.stringify(userData)})">
-                        이름 저장하기
-                    </button>
-                </div>
-            `).join('');
-
-            resultsDiv.classList.remove('hidden');
-        }
-
-        async function saveName(nameData, userData) {
-            try {
-                const response = await fetch('/save', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name_data: nameData,
-                        user_data: userData
-                    })
-                });
-
-                const result = await response.json();
-                if (result.success) {
-                    alert(result.message);
-                    location.reload();  // 페이지를 새로고침하여 저장된 이름 목록 업데이트
-                } else {
-                    alert('저장 실패: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('저장 중 오류가 발생했습니다.');
-            }
-        }
-    </script>
-</body>
-</html> 
+    });
+</script>
+{% endblock %} 

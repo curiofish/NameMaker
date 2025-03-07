@@ -1,37 +1,60 @@
-# 무료 작명소 (NameMaker)
+# NameMaker - AI 기반 이름 생성 서비스
 
-이 프로젝트는 사용자가 직접 이름을 지어볼 수 있는 웹 기반 작명 서비스입니다.
+AI를 활용한 한글 이름 생성 서비스입니다. 사용자의 성별, 출생년도 등을 고려하여 운세와 의미가 있는 이름을 생성합니다.
 
-## 기능
-- 이름 생성
-- 의미 분석
-- 음양오행 분석
+## 주요 기능
+
+- AI 기반 이름 생성
+- 운세 점수 분석
+- 한자 의미 분석
+- PDF 리포트 생성
 - 이름 저장 및 관리
+- 다크 모드 지원
 
-## 설치 방법
+## 기술 스택
 
-1. 저장소를 클론합니다:
+- Python 3.9
+- Flask
+- SQLite
+- ReportLab (PDF 생성)
+- Bootstrap 5
+- jQuery
+
+## 설치 및 실행
+
+1. 저장소 클론
 ```bash
-git clone [repository-url]
+git clone https://github.com/your-username/namemaker.git
+cd namemaker
 ```
 
-2. 가상환경을 생성하고 활성화합니다:
+2. 가상환경 생성 및 활성화
 ```bash
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
 ```
 
-3. 필요한 패키지를 설치합니다:
+3. 의존성 설치
 ```bash
 pip install -r requirements.txt
 ```
 
-## 실행 방법
+4. 데이터베이스 초기화
 ```bash
-python run.py
+python init_db.py
 ```
 
-## 저작권
-Copyright © 2024 Curiofish (fishcurio@gmail.com)
+5. 서버 실행
+```bash
+python app.py
+```
 
-All rights reserved. 
+6. 브라우저에서 접속
+```
+http://localhost:5000
+```
+
+## 라이선스
+
+MIT License 
