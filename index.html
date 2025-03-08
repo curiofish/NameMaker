@@ -236,8 +236,11 @@
 
                 const names = [];
                 const usedCombinations = new Set();
+                const maxAttempts = 1000; // 최대 시도 횟수 설정
+                let attempts = 0;
                 
-                while (names.length < 5) {
+                while (names.length < 20 && attempts < maxAttempts) { // 20개의 이름으로 증가
+                    attempts++;
                     const firstName = HANJA_CHARS[Math.floor(Math.random() * HANJA_CHARS.length)];
                     const secondName = HANJA_CHARS[Math.floor(Math.random() * HANJA_CHARS.length)];
                     const combination = firstName + secondName;
@@ -255,6 +258,9 @@
                         });
                     }
                 }
+                
+                // 점수 기준으로 정렬
+                names.sort((a, b) => b.score - a.score);
                 
                 // 결과를 캐시에 저장
                 saveToCache(cacheKey, names);
@@ -329,33 +335,44 @@
                 nameResults.innerHTML = '';
                 results.style.display = 'block';
 
+                // 결과를 4열로 표시하도록 수정
                 names.forEach(name => {
                     const col = document.createElement('div');
-                    col.className = 'col-md-6 mb-4';
+                    col.className = 'col-md-3 mb-4'; // 3열로 변경
                     col.innerHTML = `
                         <div class="card h-100 name-card">
                             <div class="card-body">
-                                <h4 class="card-title">${name.name} (${Array.from(name.hanja).map(char => `${hanjaData[char]?.hanja}[${hanjaData[char]?.meaning}]`).join(' ')})</h4>
+                                <h5 class="card-title">${name.name}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">(${Array.from(name.hanja).map(char => `${hanjaData[char]?.hanja}[${hanjaData[char]?.meaning}]`).join(' ')})</h6>
                                 <p class="card-text">
-                                    <strong>의미:</strong> ${name.meaning}<br>
                                     <strong>운세 점수:</strong> ${name.score}점
                                 </p>
-                                <div class="analysis-detail mt-3">
-                                    <h5>상세 분석</h5>
-                                    <ul class="list-group list-group-flush">
-                                        ${name.analysis.map(item => `
-                                            <li class="list-group-item">
-                                                <i class="fas fa-check text-success me-2"></i>
-                                                ${item}
-                                            </li>
-                                        `).join('')}
-                                    </ul>
-                </div>
-            </div>
-        </div>
+                                <button class="btn btn-outline-primary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#analysis${name.name}" aria-expanded="false">
+                                    상세 분석 보기
+                                </button>
+                                <div class="collapse mt-2" id="analysis${name.name}">
+                                    <div class="card card-body p-2">
+                                        <ul class="list-group list-group-flush">
+                                            ${name.analysis.map(item => `
+                                                <li class="list-group-item py-1">
+                                                    <i class="fas fa-check text-success me-2"></i>
+                                                    ${item}
+                                                </li>
+                                            `).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     `;
                     nameResults.appendChild(col);
                 });
+
+                // 결과 개수 표시 추가
+                const resultCount = document.createElement('div');
+                resultCount.className = 'col-12 text-center mb-4';
+                resultCount.innerHTML = `<p class="text-muted">총 ${names.length}개의 이름이 생성되었습니다.</p>`;
+                nameResults.insertBefore(resultCount, nameResults.firstChild);
             }
 
             // 폼 제출 이벤트 리스너
