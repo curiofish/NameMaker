@@ -7,196 +7,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
+    <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #f8f9fa;
         }
-    .hero-section {
+        .hero-section {
             background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
-        color: white;
+            color: white;
             padding: 100px 0;
             margin-bottom: 50px;
-        position: relative;
-        overflow: hidden;
-    }
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-        background-size: cover;
-        opacity: 0.1;
-    }
-    .hero-content {
-        position: relative;
-        z-index: 1;
-        max-width: 800px;
-        margin: 0 auto;
-        text-align: center;
-    }
-    .hero-title {
-        font-size: 3.5rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        line-height: 1.2;
-    }
-    .hero-subtitle {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
-        opacity: 0.9;
-    }
-    .cta-button {
-            padding: 15px 40px;
-        font-size: 1.2rem;
-            border-radius: 30px;
-            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
-            border: none;
-            color: white;
-            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-    .cta-button:hover {
-            transform: scale(1.05);
-            color: white;
-    }
-    .features-section {
-        padding: 4rem 0;
-    }
-    .feature-card {
-            border: none;
-        border-radius: 15px;
-            transition: transform 0.3s;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-    .feature-card:hover {
-        transform: translateY(-5px);
-    }
-    .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #000DFF;
-        }
-    .feature-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--secondary-color);
-    }
-    .feature-description {
-        color: #6C757D;
-        line-height: 1.6;
-    }
-    .how-it-works {
-        background: #F8F9FA;
-        padding: 4rem 0;
-    }
-    .step-card {
-        position: relative;
-        padding: 2rem;
-        text-align: center;
-    }
-    .step-number {
-        width: 40px;
-        height: 40px;
-        background: var(--primary-color);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        margin: 0 auto 1rem;
-    }
-    .step-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--secondary-color);
-    }
-    .step-description {
-        color: #6C757D;
-        line-height: 1.6;
-    }
-    .testimonials-section {
-        padding: 4rem 0;
-    }
-    .testimonial-card {
-        background: white;
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-    .testimonial-content {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: #495057;
-        margin-bottom: 1.5rem;
-        font-style: italic;
-    }
-    .testimonial-author {
-        display: flex;
-        align-items: center;
-    }
-    .author-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: var(--primary-color);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        margin-right: 1rem;
-    }
-    .author-info {
-        flex: 1;
-    }
-    .author-name {
-        font-weight: 600;
-        color: var(--secondary-color);
-    }
-    .author-title {
-        color: #6C757D;
-        font-size: 0.9rem;
-    }
-    .stats-section {
-        background: var(--primary-color);
-        color: white;
-        padding: 4rem 0;
-        text-align: center;
-    }
-    .stat-item {
-        margin-bottom: 2rem;
-    }
-    .stat-number {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-    .stat-label {
-        font-size: 1.2rem;
-        opacity: 0.9;
-    }
-    @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.5rem;
-        }
-        .hero-subtitle {
-            font-size: 1.2rem;
-        }
-        .feature-card {
-            margin-bottom: 2rem;
-        }
-        .step-card {
-            margin-bottom: 2rem;
-        }
-    }
         .name-card {
             transition: transform 0.3s;
             border: none;
@@ -241,13 +64,7 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .footer {
-            background-color: #343a40;
-            color: white;
-            padding: 50px 0;
-            margin-top: 100px;
-        }
-</style>
+    </style>
 </head>
 <body>
     <!-- 네비게이션 바 -->
@@ -323,65 +140,14 @@
         </div>
     </section>
 
-    <!-- 특징 섹션 -->
-    <section id="features" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">특징</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-robot feature-icon"></i>
-                            <h3>AI 기반 작명</h3>
-                            <p>최신 AI 기술을 활용하여 의미 있는 이름을 생성합니다.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-magic feature-icon"></i>
-                            <h3>다양한 옵션</h3>
-                            <p>성별, 출생년도 등 다양한 조건을 반영한 이름을 생성합니다.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-shield-alt feature-icon"></i>
-                            <h3>무료 이용</h3>
-                            <p>모든 기능을 무료로 이용할 수 있습니다.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 푸터 -->
-    <footer class="footer">
-        <div class="container text-center">
-            <p class="mb-4">AI 작명소 - 당신의 소중한 이름을 위한 최고의 선택</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/polyfills.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf-font@1.0.2/dist/NanumGothic-normal.js"></script>
-<script>
+    <script>
         // 시작하기 버튼 스크롤 함수
         function scrollToGenerate() {
             const generateSection = document.getElementById('generate');
             const headerOffset = 70;
             const elementPosition = generateSection.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
             window.scrollTo({
                 top: offsetPosition,
@@ -434,53 +200,16 @@
         const nameResults = document.getElementById('nameResults');
         const loading = document.querySelector('.loading');
 
-        // 이름 상세 보기 모달 추가
-        document.body.insertAdjacentHTML('beforeend', `
-            <div class="modal fade" id="nameDetailModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">이름 상세 분석</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body" id="nameDetailContent">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `);
-
-        nameForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const familyName = document.getElementById('family_name').value;
-            const gender = document.getElementById('gender').value;
-            const birthYear = document.getElementById('birth_year').value;
-
-            // 로딩 표시
-            loading.style.display = 'block';
-            results.style.display = 'none';
-            nameResults.innerHTML = '';
-
-            // 비동기로 이름 생성
-            setTimeout(() => {
-                const names = generateNames(familyName, gender, birthYear);
-                displayResults(names);
-                loading.style.display = 'none';
-            }, 1000);
-        });
-
         function generateNames(familyName, gender, birthYear) {
-            const names = new Set(); // 중복 방지를 위해 Set 사용
+            const names = new Set();
             const firstChars = Object.keys(hanjaData);
             const secondChars = Object.keys(hanjaData);
             
-            while (names.size < 5) { // 5개의 고유한 이름 생성
+            while (names.size < 5) {
                 const firstName = firstChars[Math.floor(Math.random() * firstChars.length)];
                 const secondName = secondChars[Math.floor(Math.random() * secondChars.length)];
                 const fullName = firstName + secondName;
                 
-                // 중복 검사 및 부적절한 조합 방지
                 if (!names.has(fullName) && firstName !== secondName) {
                     const meaning = getMeaning(fullName);
                     const score = calculateScore(fullName, birthYear);
@@ -498,28 +227,27 @@
         }
 
         function getMeaning(name) {
-            let meaning = '';
+            let meanings = [];
             for (let char of name) {
-                meaning += hanjaData[char]?.meaning || char;
+                if (hanjaData[char]) {
+                    meanings.push(hanjaData[char].meaning);
+                }
             }
-            return meaning;
+            return meanings.join(', ');
         }
 
         function calculateScore(name, birthYear) {
-            let score = 70; // 기본 점수
+            let score = 70;
             let totalStrokes = 0;
 
-            // 한자 획수 계산
             for (let char of name) {
                 totalStrokes += hanjaData[char]?.stroke || 0;
             }
 
-            // 출생년도와 한자 획수의 조화도 계산
             const yearLastDigit = birthYear % 10;
             const strokeHarmony = Math.abs(totalStrokes - yearLastDigit * 2);
             score += (10 - strokeHarmony) * 2;
 
-            // 점수 범위 조정 (70-100)
             return Math.min(100, Math.max(70, score));
         }
 
@@ -528,7 +256,6 @@
             const yearLastDigit = birthYear % 10;
             const totalStrokes = name.split('').reduce((sum, char) => sum + (hanjaData[char]?.stroke || 0), 0);
 
-            // 한자 분석
             for (let char of name) {
                 const hanja = hanjaData[char];
                 if (hanja) {
@@ -536,61 +263,17 @@
                 }
             }
 
-            // 운세 분석
             if (totalStrokes % 2 === 0) {
                 analysis.push('음양 조화가 잘 맞는 이름입니다.');
             } else {
                 analysis.push('독특한 개성을 가진 이름입니다.');
             }
 
-            // 출생년도와의 관계
             if (Math.abs(totalStrokes - yearLastDigit * 2) <= 2) {
                 analysis.push('출생년도와 조화로운 이름입니다.');
             }
 
             return analysis;
-        }
-
-        function showNameDetail(name, hanja, meaning, score, analysis) {
-            const modal = new bootstrap.Modal(document.getElementById('nameDetailModal'));
-            const content = document.getElementById('nameDetailContent');
-            
-            content.innerHTML = `
-                <div class="name-detail">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h3 class="mb-3">${name}</h3>
-                            <p><strong>한자:</strong> ${hanja}</p>
-                            <p><strong>의미:</strong> ${meaning}</p>
-                            <p><strong>운세 점수:</strong> ${score}점</p>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="score-chart">
-                                <div class="progress mb-2" style="height: 25px;">
-                                    <div class="progress-bar" role="progressbar" style="width: ${score}%;" 
-                                         aria-valuenow="${score}" aria-valuemin="0" aria-valuemax="100">
-                                        ${score}점
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="analysis-detail">
-                        <h4>상세 분석</h4>
-                        <div class="card">
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    ${analysis.map(item => `
-                                        <li class="list-group-item">${item}</li>
-                                    `).join('')}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            modal.show();
         }
 
         function displayResults(names) {
@@ -609,16 +292,47 @@
                                 <strong>의미:</strong> ${name.meaning}<br>
                                 <strong>운세 점수:</strong> ${name.score}점
                             </p>
-                            <button class="btn btn-primary w-100" 
-                                onclick="showNameDetail('${name.name}', '${name.hanja}', '${name.meaning}', ${name.score}, ${JSON.stringify(name.analysis)})">
-                                상세 보기
-                            </button>
+                            <div class="analysis-detail mt-3">
+                                <h5>상세 분석</h5>
+                                <ul class="list-group list-group-flush">
+                                    ${name.analysis.map(item => `
+                                        <li class="list-group-item">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            ${item}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 `;
                 nameResults.appendChild(col);
             });
         }
+
+        // 폼 제출 이벤트 리스너
+        nameForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const familyName = document.getElementById('family_name').value;
+            const gender = document.getElementById('gender').value;
+            const birthYear = document.getElementById('birth_year').value;
+
+            console.log('Form submitted:', { familyName, gender, birthYear });
+
+            // 로딩 표시
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            nameResults.innerHTML = '';
+
+            // 비동기로 이름 생성
+            setTimeout(() => {
+                const names = generateNames(familyName, gender, birthYear);
+                displayResults(names);
+                loading.style.display = 'none';
+                results.style.display = 'block';
+            }, 1000);
+        });
 
         // 스크롤 시 네비게이션 바 스타일 변경
         window.addEventListener('scroll', function() {
@@ -638,7 +352,7 @@
                 const targetElement = document.getElementById(targetId);
                 const headerOffset = 70;
                 const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
                 window.scrollTo({
                     top: offsetPosition,
@@ -646,7 +360,6 @@
                 });
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html> 
