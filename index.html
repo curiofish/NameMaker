@@ -335,9 +335,8 @@
                     col.innerHTML = `
                         <div class="card h-100 name-card">
                             <div class="card-body">
-                                <h4 class="card-title">${name.name}</h4>
+                                <h4 class="card-title">${name.name} (${Array.from(name.hanja).map(char => `${char}[${hanjaData[char]?.meaning}]`).join(' ')})</h4>
                                 <p class="card-text">
-                                    <strong>한자:</strong> ${name.hanja}<br>
                                     <strong>의미:</strong> ${name.meaning}<br>
                                     <strong>운세 점수:</strong> ${name.score}점
                                 </p>
