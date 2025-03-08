@@ -154,6 +154,7 @@
                                         <option value="">선택하세요</option>
                                         <option value="hanja">한자 이름</option>
                                         <option value="korean">순수 한국어 이름</option>
+                                        <option value="english">영어 이름</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">이름 생성하기</button>
@@ -377,12 +378,137 @@
             '한별': { meaning: '크고 밝은 별', type: ['자연'] },
             '해랑': { meaning: '해와 함께', type: ['자연'] },
             '해린': { meaning: '넓은 바다', type: ['자연'] },
-            '해솔빛': { meaning: '소나무에 비치는 햇빛', type: ['자연'] }
+            '해솔빛': { meaning: '소나무에 비치는 햇빛', type: ['자연'] },
+            // 꽃과 식물
+            '가람꽃': { meaning: '강가에 핀 꽃', type: ['자연'] },
+            '갈대': { meaning: '물가에서 자라는 갈대', type: ['자연'] },
+            '꽃내': { meaning: '꽃이 피어있는 시냇가', type: ['자연'] },
+            '나리': { meaning: '백합꽃', type: ['자연'] },
+            '단풍': { meaning: '가을 단풍', type: ['자연'] },
+            '들꽃': { meaning: '들에 핀 꽃', type: ['자연'] },
+            '매화': { meaning: '매화꽃', type: ['자연'] },
+            '목련': { meaning: '목련꽃', type: ['자연'] },
+            '민들레': { meaning: '들에 피는 민들레', type: ['자연'] },
+            '보리': { meaning: '보리', type: ['자연'] },
+            '산들': { meaning: '산들바람', type: ['자연'] },
+            '산딸기': { meaning: '산에서 자라는 딸기', type: ['자연'] },
+            '솔향': { meaning: '소나무 향기', type: ['자연'] },
+            '수련': { meaning: '연꽃', type: ['자연'] },
+            '숲': { meaning: '나무가 우거진 숲', type: ['자연'] },
+            '신록': { meaning: '새로 난 푸른 잎', type: ['자연'] },
+            '연꽃': { meaning: '연꽃', type: ['자연'] },
+            '진달래': { meaning: '진달래꽃', type: ['자연'] },
+            // 빛과 색
+            '가람빛': { meaning: '강물 빛깔', type: ['자연'] },
+            '금빛': { meaning: '금색 빛', type: ['자연'] },
+            '나비빛': { meaning: '나비의 빛깔', type: ['자연'] },
+            '달빛': { meaning: '달빛', type: ['자연'] },
+            '무지개빛': { meaning: '무지개 빛깔', type: ['자연'] },
+            '별빛': { meaning: '별빛', type: ['자연'] },
+            '보름빛': { meaning: '보름달 빛', type: ['자연'] },
+            '새빛': { meaning: '새로운 빛', type: ['자연'] },
+            '은빛': { meaning: '은색 빛', type: ['자연'] },
+            '햇빛': { meaning: '햇빛', type: ['자연'] },
+            // 감정과 마음
+            '가득': { meaning: '충만한', type: ['의미'] },
+            '기쁨': { meaning: '기쁨', type: ['의미'] },
+            '달님': { meaning: '달님처럼 포근한', type: ['의미'] },
+            '맑음': { meaning: '맑은 마음', type: ['의미'] },
+            '바름': { meaning: '올바름', type: ['의미'] },
+            '밝음': { meaning: '밝은 마음', type: ['의미'] },
+            '보람': { meaning: '보람', type: ['의미'] },
+            '사랑': { meaning: '사랑', type: ['의미'] },
+            '설렘': { meaning: '가슴 설렘', type: ['의미'] },
+            '순수': { meaning: '순수함', type: ['의미'] },
+            '아름': { meaning: '아름다움', type: ['의미'] },
+            '정다움': { meaning: '정이 많음', type: ['의미'] },
+            '즐거움': { meaning: '즐거움', type: ['의미'] },
+            '평화': { meaning: '평화', type: ['의미'] },
+            '행복': { meaning: '행복', type: ['의미'] },
+            // 시간과 계절
+            '가을빛': { meaning: '가을의 빛', type: ['자연'] },
+            '겨울': { meaning: '겨울', type: ['자연'] },
+            '고운봄': { meaning: '아름다운 봄', type: ['자연'] },
+            '늦봄': { meaning: '늦은 봄', type: ['자연'] },
+            '달밤': { meaning: '달 밝은 밤', type: ['자연'] },
+            '봄날': { meaning: '봄날', type: ['자연'] },
+            '봄비': { meaning: '봄비', type: ['자연'] },
+            '새날': { meaning: '새로운 날', type: ['의미'] },
+            '새벽별': { meaning: '새벽에 뜨는 별', type: ['자연'] },
+            '여름날': { meaning: '여름날', type: ['자연'] },
+            '여름빛': { meaning: '여름의 빛', type: ['자연'] },
+            '저녁': { meaning: '저녁', type: ['자연'] },
+            '첫봄': { meaning: '첫 봄', type: ['자연'] },
+            // 자연 현상
+            '가랑비': { meaning: '가늘게 내리는 비', type: ['자연'] },
+            '그루터기': { meaning: '나무의 그루터기', type: ['자연'] },
+            '나래바람': { meaning: '날개 같은 바람', type: ['자연'] },
+            '단비': { meaning: '단비', type: ['자연'] },
+            '맑은비': { meaning: '맑은 비', type: ['자연'] },
+            '물결': { meaning: '물결', type: ['자연'] },
+            '물빛': { meaning: '물빛', type: ['자연'] },
+            '바닷빛': { meaning: '바다 빛깔', type: ['자연'] },
+            '바람결': { meaning: '바람결', type: ['자연'] },
+            '봄바람': { meaning: '봄바람', type: ['자연'] },
+            '빗방울': { meaning: '빗방울', type: ['자연'] },
+            '새바람': { meaning: '새로운 바람', type: ['자연'] },
+            '솔바람': { meaning: '소나무 사이로 부는 바람', type: ['자연'] },
+            '숲속': { meaning: '숲속', type: ['자연'] },
+            '여울물': { meaning: '여울지는 물', type: ['자연'] },
+            '잔물결': { meaning: '잔잔한 물결', type: ['자연'] }
+        };
+
+        // 영어 이름 데이터
+        const englishNameData = {
+            // Nature-inspired
+            'River': { meaning: 'Flowing water', type: ['nature'] },
+            'Sky': { meaning: 'The heavens above', type: ['nature'] },
+            'Dawn': { meaning: 'First appearance of light', type: ['nature'] },
+            'Forest': { meaning: 'Wooded area', type: ['nature'] },
+            'Rain': { meaning: 'Water from the sky', type: ['nature'] },
+            'Storm': { meaning: 'Powerful weather', type: ['nature'] },
+            'Brook': { meaning: 'Small stream', type: ['nature'] },
+            'Glen': { meaning: 'Valley', type: ['nature'] },
+            'Lake': { meaning: 'Body of water', type: ['nature'] },
+            'Meadow': { meaning: 'Grassy area', type: ['nature'] },
+
+            // Virtues and Qualities
+            'Hope': { meaning: 'Optimistic feeling', type: ['virtue'] },
+            'Joy': { meaning: 'Great happiness', type: ['virtue'] },
+            'Grace': { meaning: 'Elegance and divine favor', type: ['virtue'] },
+            'Faith': { meaning: 'Complete trust', type: ['virtue'] },
+            'Peace': { meaning: 'State of tranquility', type: ['virtue'] },
+            'Love': { meaning: 'Deep affection', type: ['virtue'] },
+            'Harmony': { meaning: 'Agreement in feeling', type: ['virtue'] },
+            'Destiny': { meaning: 'Predetermined future', type: ['virtue'] },
+            'Liberty': { meaning: 'Freedom', type: ['virtue'] },
+            'Melody': { meaning: 'Sweet sequence of sounds', type: ['virtue'] },
+
+            // Colors and Light
+            'Azure': { meaning: 'Sky blue', type: ['color'] },
+            'Amber': { meaning: 'Orange yellow', type: ['color'] },
+            'Crystal': { meaning: 'Clear, pure', type: ['color'] },
+            'Ruby': { meaning: 'Deep red', type: ['color'] },
+            'Silver': { meaning: 'Shining gray', type: ['color'] },
+            'Golden': { meaning: 'Precious yellow', type: ['color'] },
+            'Pearl': { meaning: 'Lustrous white', type: ['color'] },
+            'Scarlet': { meaning: 'Bright red', type: ['color'] },
+
+            // Flowers and Plants
+            'Rose': { meaning: 'Flowering plant', type: ['nature'] },
+            'Lily': { meaning: 'Elegant flower', type: ['nature'] },
+            'Iris': { meaning: 'Rainbow flower', type: ['nature'] },
+            'Ivy': { meaning: 'Climbing plant', type: ['nature'] },
+            'Hazel': { meaning: 'Tree or shrub', type: ['nature'] },
+            'Willow': { meaning: 'Graceful tree', type: ['nature'] },
+            'Violet': { meaning: 'Purple flower', type: ['nature'] },
+            'Jasmine': { meaning: 'Sweet-smelling flower', type: ['nature'] }
         };
 
         // 미리 계산된 한자 배열
         const HANJA_CHARS = Object.keys(hanjaData);
         const KOREAN_NAMES = Object.keys(koreanNameData);
+        const ENGLISH_NAMES = Object.keys(englishNameData);
         const CACHE_KEY = 'nameCache';
 
         // DOM이 로드된 후 실행
@@ -622,8 +748,10 @@
                     let names;
                     if (nameType === 'hanja') {
                         names = generateNames(familyName, gender, birthYear);
-                    } else {
+                    } else if (nameType === 'korean') {
                         names = generateKoreanNames(familyName, gender);
+                    } else if (nameType === 'english') {
+                        names = generateEnglishNames(familyName);
                     }
                     displayResults(names, nameType);
                     loading.style.display = 'none';
@@ -730,6 +858,66 @@
 
                 return analysis;
             }
+
+            // 영어 이름 생성 함수
+            function generateEnglishNames(familyName) {
+                const names = [];
+                const usedCombinations = new Set();
+                const maxAttempts = 1000;
+                let attempts = 0;
+
+                while (names.length < 10 && attempts < maxAttempts) {
+                    attempts++;
+                    const name = ENGLISH_NAMES[Math.floor(Math.random() * ENGLISH_NAMES.length)];
+                    
+                    if (!usedCombinations.has(name)) {
+                        usedCombinations.add(name);
+                        const meaning = englishNameData[name].meaning;
+                        const types = englishNameData[name].type;
+                        names.push({
+                            name: familyName + ' ' + name,
+                            english: name,
+                            meaning: meaning,
+                            types: types,
+                            analysis: generateEnglishAnalysis(name, types)
+                        });
+                    }
+                }
+                
+                return names;
+            }
+
+            function generateEnglishAnalysis(name, types) {
+                const analysis = [];
+                
+                // 의미 분석
+                analysis.push(`Meaning: ${englishNameData[name].meaning}`);
+                
+                // 이름 유형 분석
+                analysis.push(`Name type: ${types.join(', ')}`);
+                
+                // 특징 분석
+                if (types.includes('nature')) {
+                    analysis.push('This name draws inspiration from the natural world.');
+                }
+                if (types.includes('virtue')) {
+                    analysis.push('This name represents an admirable quality or virtue.');
+                }
+                if (types.includes('color')) {
+                    analysis.push('This name evokes a beautiful color or visual quality.');
+                }
+
+                return analysis;
+            }
+
+            // 이름 유형 선택 옵션 수정
+            const nameTypeSelect = document.getElementById('nameType');
+            nameTypeSelect.innerHTML = `
+                <option value="">선택하세요</option>
+                <option value="hanja">한자 이름</option>
+                <option value="korean">순수 한국어 이름</option>
+                <option value="english">영어 이름</option>
+            `;
     });
 </script>
 </body>
