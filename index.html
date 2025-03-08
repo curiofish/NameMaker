@@ -303,10 +303,10 @@
                                 <div class="mb-3">
                                     <label for="birth_year" class="form-label">출생년도</label>
                                     <input type="number" class="form-control" id="birth_year" min="1900" max="2100" required>
-    </div>
+                                </div>
                                 <button type="submit" class="btn btn-primary w-100">이름 생성하기</button>
                             </form>
-</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -319,25 +319,25 @@
             <div id="results" class="mt-5" style="display: none;">
                 <h3 class="text-center mb-4">생성된 이름</h3>
                 <div class="row" id="nameResults"></div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- 특징 섹션 -->
     <section id="features" class="py-5 bg-light">
-    <div class="container">
+        <div class="container">
             <h2 class="text-center mb-5">특징</h2>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-4">
                     <div class="card feature-card h-100">
                         <div class="card-body text-center">
                             <i class="fas fa-robot feature-icon"></i>
                             <h3>AI 기반 작명</h3>
                             <p>최신 AI 기술을 활용하여 의미 있는 이름을 생성합니다.</p>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-            <div class="col-md-4">
+                <div class="col-md-4">
                     <div class="card feature-card h-100">
                         <div class="card-body text-center">
                             <i class="fas fa-magic feature-icon"></i>
@@ -352,12 +352,12 @@
                             <i class="fas fa-shield-alt feature-icon"></i>
                             <h3>무료 이용</h3>
                             <p>모든 기능을 무료로 이용할 수 있습니다.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- 푸터 -->
     <footer class="footer">
@@ -405,7 +405,27 @@
             '수': { meaning: '수려하고 아름다운', stroke: 6 },
             '영': { meaning: '영원하고 빛나는', stroke: 8 },
             '진': { meaning: '진실되고 성실한', stroke: 9 },
-            '성': { meaning: '성공하고 번영하는', stroke: 7 }
+            '성': { meaning: '성공하고 번영하는', stroke: 7 },
+            '하': { meaning: '크고 넓은', stroke: 3 },
+            '태': { meaning: '태평하고 평화로운', stroke: 10 },
+            '유': { meaning: '부드럽고 유연한', stroke: 5 },
+            '인': { meaning: '어질고 착한', stroke: 4 },
+            '예': { meaning: '아름답고 우아한', stroke: 8 },
+            '채': { meaning: '빛나고 아름다운', stroke: 11 },
+            '원': { meaning: '으뜸가는', stroke: 4 },
+            '정': { meaning: '바르고 곧은', stroke: 8 },
+            '승': { meaning: '이기고 승리하는', stroke: 11 },
+            '혜': { meaning: '지혜롭고 총명한', stroke: 16 },
+            '상': { meaning: '상서롭고 길한', stroke: 7 },
+            '선': { meaning: '착하고 선한', stroke: 7 },
+            '미': { meaning: '아름답고 고운', stroke: 6 },
+            '래': { meaning: '다가올 미래', stroke: 9 },
+            '한': { meaning: '크고 한없는', stroke: 9 },
+            '소': { meaning: '웃음이 있는', stroke: 4 },
+            '희': { meaning: '기쁨이 있는', stroke: 12 },
+            '다': { meaning: '많고 풍성한', stroke: 3 },
+            '온': { meaning: '온화하고 따뜻한', stroke: 8 },
+            '해': { meaning: '밝고 빛나는', stroke: 10 }
         };
 
         // 이름 생성 로직
@@ -413,6 +433,22 @@
         const results = document.getElementById('results');
         const nameResults = document.getElementById('nameResults');
         const loading = document.querySelector('.loading');
+
+        // 이름 상세 보기 모달 추가
+        document.body.insertAdjacentHTML('beforeend', `
+            <div class="modal fade" id="nameDetailModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">이름 상세 분석</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" id="nameDetailContent">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
 
         nameForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -435,28 +471,30 @@
         });
 
         function generateNames(familyName, gender, birthYear) {
-            const names = [];
-            const maleNames = ['민준', '서준', '도윤', '지호', '준호', '현우', '지우', '서진', '도현', '준서'];
-            const femaleNames = ['서연', '지우', '서현', '민서', '지민', '하은', '서은', '지은', '서윤', '지현'];
-
-            const nameList = gender === '남' ? maleNames : femaleNames;
+            const names = new Set(); // 중복 방지를 위해 Set 사용
+            const firstChars = Object.keys(hanjaData);
+            const secondChars = Object.keys(hanjaData);
             
-            for (let i = 0; i < 5; i++) {
-                const randomName = nameList[Math.floor(Math.random() * nameList.length)];
-                const fullName = familyName + randomName;
-                const meaning = getMeaning(randomName);
-                const score = calculateScore(randomName, birthYear);
-
-                names.push({
-                    name: fullName,
-                    hanja: randomName,
-                    meaning: meaning,
-                    score: score,
-                    analysis: generateAnalysis(randomName, birthYear)
-                });
+            while (names.size < 5) { // 5개의 고유한 이름 생성
+                const firstName = firstChars[Math.floor(Math.random() * firstChars.length)];
+                const secondName = secondChars[Math.floor(Math.random() * secondChars.length)];
+                const fullName = firstName + secondName;
+                
+                // 중복 검사 및 부적절한 조합 방지
+                if (!names.has(fullName) && firstName !== secondName) {
+                    const meaning = getMeaning(fullName);
+                    const score = calculateScore(fullName, birthYear);
+                    names.add({
+                        name: familyName + fullName,
+                        hanja: fullName,
+                        meaning: meaning,
+                        score: score,
+                        analysis: generateAnalysis(fullName, birthYear)
+                    });
+                }
             }
-
-            return names;
+            
+            return Array.from(names);
         }
 
         function getMeaning(name) {
@@ -513,6 +551,48 @@
             return analysis;
         }
 
+        function showNameDetail(name, hanja, meaning, score, analysis) {
+            const modal = new bootstrap.Modal(document.getElementById('nameDetailModal'));
+            const content = document.getElementById('nameDetailContent');
+            
+            content.innerHTML = `
+                <div class="name-detail">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h3 class="mb-3">${name}</h3>
+                            <p><strong>한자:</strong> ${hanja}</p>
+                            <p><strong>의미:</strong> ${meaning}</p>
+                            <p><strong>운세 점수:</strong> ${score}점</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="score-chart">
+                                <div class="progress mb-2" style="height: 25px;">
+                                    <div class="progress-bar" role="progressbar" style="width: ${score}%;" 
+                                         aria-valuenow="${score}" aria-valuemin="0" aria-valuemax="100">
+                                        ${score}점
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analysis-detail">
+                        <h4>상세 분석</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    ${analysis.map(item => `
+                                        <li class="list-group-item">${item}</li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.show();
+        }
+
         function displayResults(names) {
             nameResults.innerHTML = '';
             results.style.display = 'block';
@@ -529,66 +609,15 @@
                                 <strong>의미:</strong> ${name.meaning}<br>
                                 <strong>운세 점수:</strong> ${name.score}점
                             </p>
-                            <div class="analysis-section">
-                                <h5>이름 분석</h5>
-                                <ul class="list-unstyled">
-                                    ${name.analysis.map(item => `<li>${item}</li>`).join('')}
-                                </ul>
-                            </div>
-                            <button class="btn btn-outline-primary" onclick="downloadPDF('${name.name}', '${name.hanja}', '${name.meaning}', ${name.score}, ${JSON.stringify(name.analysis)})">
-                                PDF 다운로드
+                            <button class="btn btn-primary w-100" 
+                                onclick="showNameDetail('${name.name}', '${name.hanja}', '${name.meaning}', ${name.score}, ${JSON.stringify(name.analysis)})">
+                                상세 보기
                             </button>
                         </div>
                     </div>
                 `;
                 nameResults.appendChild(col);
             });
-        }
-
-        function downloadPDF(name, hanja, meaning, score, analysis) {
-            try {
-                window.jsPDF = window.jspdf.jsPDF;
-                const doc = new jsPDF();
-                
-                // 기본 폰트 설정
-                doc.setFont('helvetica');
-                
-                // 제목
-                doc.setFontSize(16);
-                doc.text('Name Analysis Result', 20, 20);
-                
-                // 내용
-                doc.setFontSize(12);
-                doc.text('Name: ' + name, 20, 40);
-                doc.text('Hanja: ' + hanja, 20, 50);
-                doc.text('Meaning: ' + meaning, 20, 60);
-                doc.text('Fortune Score: ' + score, 20, 70);
-                
-                // 분석 결과
-                doc.setFontSize(14);
-                doc.text('Analysis', 20, 90);
-                
-                const analysisList = JSON.parse(analysis);
-                let y = 100;
-                analysisList.forEach(item => {
-                    // 긴 텍스트 자동 줄바꿈
-                    const lines = doc.splitTextToSize('- ' + item, 170);
-                    lines.forEach(line => {
-                        if (y > 280) { // 페이지 넘어갈 경우 새 페이지 추가
-                            doc.addPage();
-                            y = 20;
-                        }
-                        doc.text(line, 20, y);
-                        y += 10;
-                    });
-                });
-                
-                // PDF 파일 저장
-                doc.save(name + '_analysis.pdf');
-            } catch (error) {
-                console.error('PDF generation error:', error);
-                alert('PDF 생성 중 오류가 발생했습니다. 다시 시도해주세요.');
-            }
         }
 
         // 스크롤 시 네비게이션 바 스타일 변경
@@ -615,6 +644,7 @@
                     top: offsetPosition,
                     behavior: "smooth"
                 });
+            });
         });
     });
 </script>
