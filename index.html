@@ -148,6 +148,14 @@
                                     <label for="birth_year" class="form-label">출생년도</label>
                                     <input type="number" class="form-control" id="birth_year" min="1900" max="2100" required>
                 </div>
+                                <div class="mb-3">
+                                    <label for="nameType" class="form-label">이름 유형</label>
+                                    <select class="form-select" id="nameType" required>
+                                        <option value="">선택하세요</option>
+                                        <option value="hanja">한자 이름</option>
+                                        <option value="korean">순수 한국어 이름</option>
+                                    </select>
+                                </div>
                                 <button type="submit" class="btn btn-primary w-100">이름 생성하기</button>
                             </form>
                         </div>
@@ -265,8 +273,33 @@
             '해': { meaning: '밝고 빛나는', stroke: 10, hanja: '海' }
         };
 
+        // 순수 한국어 이름 데이터
+        const koreanNameData = {
+            '하늘': { meaning: '맑고 높은 하늘', type: ['자연'] },
+            '바다': { meaning: '넓고 깊은 바다', type: ['자연'] },
+            '달': { meaning: '밝은 달', type: ['자연'] },
+            '별': { meaning: '반짝이는 별', type: ['자연'] },
+            '구름': { meaning: '자유로운 구름', type: ['자연'] },
+            '나래': { meaning: '날개', type: ['자연'] },
+            '솔': { meaning: '소나무', type: ['자연'] },
+            '가람': { meaning: '강, 물길', type: ['자연'] },
+            '새롬': { meaning: '새로움', type: ['의미'] },
+            '보람': { meaning: '가치 있는 결실', type: ['의미'] },
+            '슬기': { meaning: '지혜', type: ['의미'] },
+            '아름': { meaning: '아름다움', type: ['의미'] },
+            '다운': { meaning: '아름답고 고운', type: ['형용'] },
+            '고운': { meaning: '아름답고 예쁜', type: ['형용'] },
+            '맑은': { meaning: '깨끗하고 밝은', type: ['형용'] },
+            '바른': { meaning: '올바르고 바른', type: ['형용'] },
+            '힘찬': { meaning: '활력 있는', type: ['형용'] },
+            '푸른': { meaning: '푸르고 싱그러운', type: ['형용'] },
+            '밝은': { meaning: '환하고 밝은', type: ['형용'] },
+            '단아': { meaning: '단정하고 아름다운', type: ['형용'] }
+        };
+
         // 미리 계산된 한자 배열
         const HANJA_CHARS = Object.keys(hanjaData);
+        const KOREAN_NAMES = Object.keys(koreanNameData);
         const CACHE_KEY = 'nameCache';
 
         // DOM이 로드된 후 실행
@@ -415,44 +448,74 @@
                 return analysis;
             }
 
-            function displayResults(names) {
+            function displayResults(names, type) {
                 nameResults.innerHTML = '';
                 results.style.display = 'block';
 
-                // 결과를 4열로 표시하도록 수정
                 names.forEach(name => {
                     const col = document.createElement('div');
-                    col.className = 'col-md-3 mb-4'; // 3열로 변경
-                    col.innerHTML = `
-                        <div class="card h-100 name-card">
-                            <div class="card-body">
-                                <h5 class="card-title">${name.name}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">(${Array.from(name.hanja).map(char => `${hanjaData[char]?.hanja}[${hanjaData[char]?.meaning}]`).join(' ')})</h6>
-                                <p class="card-text">
-                                    <strong>운세 점수:</strong> ${name.score}점
-                                </p>
-                                <button class="btn btn-outline-primary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#analysis${name.name}" aria-expanded="false">
-                                    상세 분석 보기
-                                </button>
-                                <div class="collapse mt-2" id="analysis${name.name}">
-                                    <div class="card card-body p-2">
-                                        <ul class="list-group list-group-flush">
-                                            ${name.analysis.map(item => `
-                                                <li class="list-group-item py-1">
-                                                    <i class="fas fa-check text-success me-2"></i>
-                                                    ${item}
-                                                </li>
-                                            `).join('')}
-                                        </ul>
+                    col.className = 'col-md-3 mb-4';
+                    
+                    let content;
+                    if (type === 'hanja') {
+                        content = `
+                            <div class="card h-100 name-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">${name.name}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">(${Array.from(name.hanja).map(char => `${hanjaData[char]?.hanja}[${hanjaData[char]?.meaning}]`).join(' ')})</h6>
+                                    <p class="card-text">
+                                        <strong>운세 점수:</strong> ${name.score}점
+                                    </p>
+                                    <button class="btn btn-outline-primary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#analysis${name.name}" aria-expanded="false">
+                                        상세 분석 보기
+                                    </button>
+                                    <div class="collapse mt-2" id="analysis${name.name}">
+                                        <div class="card card-body p-2">
+                                            <ul class="list-group list-group-flush">
+                                                ${name.analysis.map(item => `
+                                                    <li class="list-group-item py-1">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        ${item}
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        content = `
+                            <div class="card h-100 name-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">${name.name}</h5>
+                                    <p class="card-text">
+                                        <strong>의미:</strong> ${name.meaning}
+                                    </p>
+                                    <button class="btn btn-outline-primary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#analysis${name.name}" aria-expanded="false">
+                                        상세 분석 보기
+                                    </button>
+                                    <div class="collapse mt-2" id="analysis${name.name}">
+                                        <div class="card card-body p-2">
+                                            <ul class="list-group list-group-flush">
+                                                ${name.analysis.map(item => `
+                                                    <li class="list-group-item py-1">
+                                                        <i class="fas fa-check text-success me-2"></i>
+                                                        ${item}
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    col.innerHTML = content;
                     nameResults.appendChild(col);
                 });
 
-                // 결과 개수 표시 추가
                 const resultCount = document.createElement('div');
                 resultCount.className = 'col-12 text-center mb-4';
                 resultCount.innerHTML = `<p class="text-muted">총 ${names.length}개의 이름이 생성되었습니다.</p>`;
@@ -466,16 +529,20 @@
                 const familyName = document.getElementById('family_name').value;
                 const gender = document.getElementById('gender').value;
                 const birthYear = document.getElementById('birth_year').value;
+                const nameType = document.getElementById('nameType').value;
 
-                // 로딩 표시
                 loading.style.display = 'block';
                 results.style.display = 'none';
                 nameResults.innerHTML = '';
 
-                // 비동기로 이름 생성 (시간 단축: 1000ms → 300ms)
                 setTimeout(() => {
-                    const names = generateNames(familyName, gender, birthYear);
-                    displayResults(names);
+                    let names;
+                    if (nameType === 'hanja') {
+                        names = generateNames(familyName, gender, birthYear);
+                    } else {
+                        names = generateKoreanNames(familyName, gender);
+                    }
+                    displayResults(names, nameType);
                     loading.style.display = 'none';
                     results.style.display = 'block';
                 }, 300);
@@ -526,7 +593,61 @@
 
             // scrollToGenerate 함수를 전역으로 노출
             window.scrollToGenerate = scrollToGenerate;
-    });
-</script>
+
+            function generateKoreanNames(familyName, gender) {
+                const names = [];
+                const usedCombinations = new Set();
+                const maxAttempts = 1000;
+                let attempts = 0;
+
+                while (names.length < 10 && attempts < maxAttempts) {
+                    attempts++;
+                    const name = KOREAN_NAMES[Math.floor(Math.random() * KOREAN_NAMES.length)];
+                    
+                    if (!usedCombinations.has(name)) {
+                        usedCombinations.add(name);
+                        const meaning = koreanNameData[name].meaning;
+                        const types = koreanNameData[name].type;
+                        names.push({
+                            name: familyName + name,
+                            korean: name,
+                            meaning: meaning,
+                            types: types,
+                            analysis: generateKoreanAnalysis(name, types)
+                        });
+                    }
+                }
+                
+                return names;
+            }
+
+            function generateKoreanAnalysis(name, types) {
+                const analysis = [];
+                
+                // 의미 분석
+                analysis.push(`의미: ${koreanNameData[name].meaning}`);
+                
+                // 이름 유형 분석
+                analysis.push(`이름 유형: ${types.join(', ')}`);
+                
+                // 음절 분석
+                const syllableCount = name.length;
+                analysis.push(`음절 수: ${syllableCount}음절`);
+                
+                // 특징 분석
+                if (types.includes('자연')) {
+                    analysis.push('자연과 조화를 이루는 아름다운 이름입니다.');
+                }
+                if (types.includes('의미')) {
+                    analysis.push('깊이 있는 의미를 담은 이름입니다.');
+                }
+                if (types.includes('형용')) {
+                    analysis.push('아름다운 성품을 표현하는 이름입니다.');
+                }
+
+                return analysis;
+            }
+        });
+    </script>
 </body>
 </html> 
