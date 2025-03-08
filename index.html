@@ -142,6 +142,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // 미리 계산된 한자 배열
+        const HANJA_CHARS = Object.keys(hanjaData);
+        const CACHE_KEY = 'nameCache';
+
         // 시작하기 버튼 스크롤 함수
         function scrollToGenerate() {
             const generateSection = document.getElementById('generate');
@@ -200,53 +204,75 @@
         const nameResults = document.getElementById('nameResults');
         const loading = document.querySelector('.loading');
 
+        // 캐시에서 이름 가져오기
+        function getFromCache(key) {
+            const cache = localStorage.getItem(CACHE_KEY);
+            if (cache) {
+                const data = JSON.parse(cache);
+                return data[key];
+            }
+            return null;
+        }
+
+        // 캐시에 이름 저장
+        function saveToCache(key, names) {
+            const cache = localStorage.getItem(CACHE_KEY);
+            const data = cache ? JSON.parse(cache) : {};
+            data[key] = names;
+            localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        }
+
         function generateNames(familyName, gender, birthYear) {
-            const names = new Set();
-            const firstChars = Object.keys(hanjaData);
-            const secondChars = Object.keys(hanjaData);
+            // 캐시 키 생성
+            const cacheKey = `${familyName}-${gender}-${birthYear}`;
             
-            while (names.size < 5) {
-                const firstName = firstChars[Math.floor(Math.random() * firstChars.length)];
-                const secondName = secondChars[Math.floor(Math.random() * secondChars.length)];
-                const fullName = firstName + secondName;
+            // 캐시된 결과가 있는지 확인
+            const cachedNames = getFromCache(cacheKey);
+            if (cachedNames) {
+                return cachedNames;
+            }
+
+            const names = [];
+            const usedCombinations = new Set();
+            
+            while (names.length < 5) {
+                const firstName = HANJA_CHARS[Math.floor(Math.random() * HANJA_CHARS.length)];
+                const secondName = HANJA_CHARS[Math.floor(Math.random() * HANJA_CHARS.length)];
+                const combination = firstName + secondName;
                 
-                if (!names.has(fullName) && firstName !== secondName) {
-                    const meaning = getMeaning(fullName);
-                    const score = calculateScore(fullName, birthYear);
-                    names.add({
-                        name: familyName + fullName,
-                        hanja: fullName,
+                if (!usedCombinations.has(combination) && firstName !== secondName) {
+                    usedCombinations.add(combination);
+                    const meaning = getMeaning(combination);
+                    const score = calculateScore(combination, birthYear);
+                    names.push({
+                        name: familyName + combination,
+                        hanja: combination,
                         meaning: meaning,
                         score: score,
-                        analysis: generateAnalysis(fullName, birthYear)
+                        analysis: generateAnalysis(combination, birthYear)
                     });
                 }
             }
             
-            return Array.from(names);
+            // 결과를 캐시에 저장
+            saveToCache(cacheKey, names);
+            return names;
         }
 
         function getMeaning(name) {
-            let meanings = [];
-            for (let char of name) {
-                if (hanjaData[char]) {
-                    meanings.push(hanjaData[char].meaning);
-                }
-            }
-            return meanings.join(', ');
+            return Array.from(name)
+                .map(char => hanjaData[char]?.meaning)
+                .filter(Boolean)
+                .join(', ');
         }
 
         function calculateScore(name, birthYear) {
-            let score = 70;
-            let totalStrokes = 0;
-
-            for (let char of name) {
-                totalStrokes += hanjaData[char]?.stroke || 0;
-            }
+            const totalStrokes = Array.from(name)
+                .reduce((sum, char) => sum + (hanjaData[char]?.stroke || 0), 0);
 
             const yearLastDigit = birthYear % 10;
             const strokeHarmony = Math.abs(totalStrokes - yearLastDigit * 2);
-            score += (10 - strokeHarmony) * 2;
+            const score = 70 + (10 - strokeHarmony) * 2;
 
             return Math.min(100, Math.max(70, score));
         }
@@ -254,21 +280,23 @@
         function generateAnalysis(name, birthYear) {
             const analysis = [];
             const yearLastDigit = birthYear % 10;
-            const totalStrokes = name.split('').reduce((sum, char) => sum + (hanjaData[char]?.stroke || 0), 0);
+            const totalStrokes = Array.from(name)
+                .reduce((sum, char) => sum + (hanjaData[char]?.stroke || 0), 0);
 
-            for (let char of name) {
+            // 각 글자 분석
+            Array.from(name).forEach(char => {
                 const hanja = hanjaData[char];
                 if (hanja) {
                     analysis.push(`${char}: ${hanja.meaning} (획수: ${hanja.stroke})`);
                 }
-            }
+            });
 
-            if (totalStrokes % 2 === 0) {
-                analysis.push('음양 조화가 잘 맞는 이름입니다.');
-            } else {
-                analysis.push('독특한 개성을 가진 이름입니다.');
-            }
+            // 음양 조화 분석
+            analysis.push(totalStrokes % 2 === 0 ? 
+                '음양 조화가 잘 맞는 이름입니다.' : 
+                '독특한 개성을 가진 이름입니다.');
 
+            // 출생년도 조화 분석
             if (Math.abs(totalStrokes - yearLastDigit * 2) <= 2) {
                 analysis.push('출생년도와 조화로운 이름입니다.');
             }
@@ -318,30 +346,26 @@
             const gender = document.getElementById('gender').value;
             const birthYear = document.getElementById('birth_year').value;
 
-            console.log('Form submitted:', { familyName, gender, birthYear });
-
             // 로딩 표시
             loading.style.display = 'block';
             results.style.display = 'none';
             nameResults.innerHTML = '';
 
-            // 비동기로 이름 생성
+            // 비동기로 이름 생성 (시간 단축: 1000ms → 300ms)
             setTimeout(() => {
                 const names = generateNames(familyName, gender, birthYear);
                 displayResults(names);
                 loading.style.display = 'none';
                 results.style.display = 'block';
-            }, 1000);
+            }, 300);
         });
 
         // 스크롤 시 네비게이션 바 스타일 변경
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.backgroundColor = 'rgba(0,0,0,0.9)';
-            } else {
-                navbar.style.backgroundColor = 'rgba(0,0,0,0.8)';
-            }
+            navbar.style.backgroundColor = window.scrollY > 50 ? 
+                'rgba(0,0,0,0.9)' : 
+                'rgba(0,0,0,0.8)';
         });
 
         // 부드러운 스크롤
