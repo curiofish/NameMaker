@@ -7,31 +7,31 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
+<style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #f8f9fa;
         }
-        .hero-section {
+    .hero-section {
             background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
-            color: white;
+        color: white;
             padding: 100px 0;
             margin-bottom: 50px;
-            position: relative;
-            overflow: hidden;
-        }
+        position: relative;
+        overflow: hidden;
+    }
         .name-card {
             transition: transform 0.3s;
             border: none;
             border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
         .name-card:hover {
-            transform: translateY(-5px);
+        transform: translateY(-5px);
         }
         .loading {
             display: none;
-            text-align: center;
+        text-align: center;
             padding: 20px;
         }
         .loading-spinner {
@@ -43,7 +43,7 @@
             backdrop-filter: blur(10px);
         }
         .navbar-brand {
-            font-weight: 700;
+        font-weight: 700;
             color: white !important;
         }
         .nav-link {
@@ -63,13 +63,13 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
     <!-- 네비게이션 바 -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
+    <div class="container">
             <a class="navbar-brand" href="#">AI 작명소</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -93,12 +93,12 @@
             <h1 class="display-4 mb-4">AI 작명소</h1>
             <p class="lead mb-4">당신의 소중한 이름을 위한 최고의 선택</p>
             <a href="#generate" class="btn btn-light btn-lg" onclick="scrollToGenerate()">지금 시작하기</a>
-        </div>
-    </section>
+    </div>
+</section>
 
     <!-- 이름 생성 섹션 -->
     <section id="generate" class="py-5">
-        <div class="container">
+    <div class="container">
             <h2 class="text-center mb-5">이름 생성하기</h2>
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -108,7 +108,7 @@
                                 <div class="mb-3">
                                     <label for="family_name" class="form-label">성</label>
                                     <input type="text" class="form-control" id="family_name" required>
-                                </div>
+                </div>
                                 <div class="mb-3">
                                     <label for="gender" class="form-label">성별</label>
                                     <select class="form-select" id="gender" required>
@@ -116,11 +116,11 @@
                                         <option value="남">남성</option>
                                         <option value="여">여성</option>
                                     </select>
-                                </div>
+            </div>
                                 <div class="mb-3">
                                     <label for="birth_year" class="form-label">출생년도</label>
                                     <input type="number" class="form-control" id="birth_year" min="1900" max="2100" required>
-                                </div>
+                </div>
                                 <button type="submit" class="btn btn-primary w-100">이름 생성하기</button>
                             </form>
                         </div>
@@ -136,49 +136,49 @@
             <div id="results" class="mt-5" style="display: none;">
                 <h3 class="text-center mb-4">생성된 이름</h3>
                 <div class="row" id="nameResults"></div>
-            </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // 한자 데이터
         const hanjaData = {
-            '민': { meaning: '민첩하고 똑똑한', stroke: 5 },
-            '준': { meaning: '준수하고 뛰어난', stroke: 10 },
-            '서': { meaning: '서로 돕고 협력하는', stroke: 6 },
-            '지': { meaning: '지혜롭고 현명한', stroke: 8 },
-            '도': { meaning: '도움을 주는', stroke: 7 },
-            '현': { meaning: '현명하고 지혜로운', stroke: 8 },
-            '우': { meaning: '우수하고 뛰어난', stroke: 6 },
-            '연': { meaning: '연약하고 부드러운', stroke: 7 },
-            '은': { meaning: '은혜로운', stroke: 9 },
-            '윤': { meaning: '윤택하고 풍요로운', stroke: 8 },
-            '호': { meaning: '호기심 많고 탐구하는', stroke: 7 },
-            '수': { meaning: '수려하고 아름다운', stroke: 6 },
-            '영': { meaning: '영원하고 빛나는', stroke: 8 },
-            '진': { meaning: '진실되고 성실한', stroke: 9 },
-            '성': { meaning: '성공하고 번영하는', stroke: 7 },
-            '하': { meaning: '크고 넓은', stroke: 3 },
-            '태': { meaning: '태평하고 평화로운', stroke: 10 },
-            '유': { meaning: '부드럽고 유연한', stroke: 5 },
-            '인': { meaning: '어질고 착한', stroke: 4 },
-            '예': { meaning: '아름답고 우아한', stroke: 8 },
-            '채': { meaning: '빛나고 아름다운', stroke: 11 },
-            '원': { meaning: '으뜸가는', stroke: 4 },
-            '정': { meaning: '바르고 곧은', stroke: 8 },
-            '승': { meaning: '이기고 승리하는', stroke: 11 },
-            '혜': { meaning: '지혜롭고 총명한', stroke: 16 },
-            '상': { meaning: '상서롭고 길한', stroke: 7 },
-            '선': { meaning: '착하고 선한', stroke: 7 },
-            '미': { meaning: '아름답고 고운', stroke: 6 },
-            '래': { meaning: '다가올 미래', stroke: 9 },
-            '한': { meaning: '크고 한없는', stroke: 9 },
-            '소': { meaning: '웃음이 있는', stroke: 4 },
-            '희': { meaning: '기쁨이 있는', stroke: 12 },
-            '다': { meaning: '많고 풍성한', stroke: 3 },
-            '온': { meaning: '온화하고 따뜻한', stroke: 8 },
-            '해': { meaning: '밝고 빛나는', stroke: 10 }
+            '민': { meaning: '민첩하고 똑똑한', stroke: 5, hanja: '敏' },
+            '준': { meaning: '준수하고 뛰어난', stroke: 10, hanja: '俊' },
+            '서': { meaning: '서로 돕고 협력하는', stroke: 6, hanja: '序' },
+            '지': { meaning: '지혜롭고 현명한', stroke: 8, hanja: '智' },
+            '도': { meaning: '도움을 주는', stroke: 7, hanja: '道' },
+            '현': { meaning: '현명하고 지혜로운', stroke: 8, hanja: '賢' },
+            '우': { meaning: '우수하고 뛰어난', stroke: 6, hanja: '優' },
+            '연': { meaning: '연약하고 부드러운', stroke: 7, hanja: '軟' },
+            '은': { meaning: '은혜로운', stroke: 9, hanja: '恩' },
+            '윤': { meaning: '윤택하고 풍요로운', stroke: 8, hanja: '潤' },
+            '호': { meaning: '호기심 많고 탐구하는', stroke: 7, hanja: '好' },
+            '수': { meaning: '수려하고 아름다운', stroke: 6, hanja: '秀' },
+            '영': { meaning: '영원하고 빛나는', stroke: 8, hanja: '永' },
+            '진': { meaning: '진실되고 성실한', stroke: 9, hanja: '眞' },
+            '성': { meaning: '성공하고 번영하는', stroke: 7, hanja: '成' },
+            '하': { meaning: '크고 넓은', stroke: 3, hanja: '河' },
+            '태': { meaning: '태평하고 평화로운', stroke: 10, hanja: '泰' },
+            '유': { meaning: '부드럽고 유연한', stroke: 5, hanja: '柔' },
+            '인': { meaning: '어질고 착한', stroke: 4, hanja: '仁' },
+            '예': { meaning: '아름답고 우아한', stroke: 8, hanja: '藝' },
+            '채': { meaning: '빛나고 아름다운', stroke: 11, hanja: '彩' },
+            '원': { meaning: '으뜸가는', stroke: 4, hanja: '元' },
+            '정': { meaning: '바르고 곧은', stroke: 8, hanja: '正' },
+            '승': { meaning: '이기고 승리하는', stroke: 11, hanja: '勝' },
+            '혜': { meaning: '지혜롭고 총명한', stroke: 16, hanja: '慧' },
+            '상': { meaning: '상서롭고 길한', stroke: 7, hanja: '祥' },
+            '선': { meaning: '착하고 선한', stroke: 7, hanja: '善' },
+            '미': { meaning: '아름답고 고운', stroke: 6, hanja: '美' },
+            '래': { meaning: '다가올 미래', stroke: 9, hanja: '來' },
+            '한': { meaning: '크고 한없는', stroke: 9, hanja: '漢' },
+            '소': { meaning: '웃음이 있는', stroke: 4, hanja: '笑' },
+            '희': { meaning: '기쁨이 있는', stroke: 12, hanja: '喜' },
+            '다': { meaning: '많고 풍성한', stroke: 3, hanja: '多' },
+            '온': { meaning: '온화하고 따뜻한', stroke: 8, hanja: '溫' },
+            '해': { meaning: '밝고 빛나는', stroke: 10, hanja: '海' }
         };
 
         // 미리 계산된 한자 배열
@@ -335,7 +335,7 @@
                     col.innerHTML = `
                         <div class="card h-100 name-card">
                             <div class="card-body">
-                                <h4 class="card-title">${name.name} (${Array.from(name.hanja).map(char => `${char}[${hanjaData[char]?.meaning}]`).join(' ')})</h4>
+                                <h4 class="card-title">${name.name} (${Array.from(name.hanja).map(char => `${hanjaData[char]?.hanja}[${hanjaData[char]?.meaning}]`).join(' ')})</h4>
                                 <p class="card-text">
                                     <strong>의미:</strong> ${name.meaning}<br>
                                     <strong>운세 점수:</strong> ${name.score}점
@@ -350,9 +350,9 @@
                                             </li>
                                         `).join('')}
                                     </ul>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+            </div>
+        </div>
                     `;
                     nameResults.appendChild(col);
                 });
@@ -407,7 +407,7 @@
 
             // scrollToGenerate 함수를 전역으로 노출
             window.scrollToGenerate = scrollToGenerate;
-        });
-    </script>
+    });
+</script>
 </body>
 </html> 
