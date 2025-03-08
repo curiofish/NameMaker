@@ -142,23 +142,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 미리 계산된 한자 배열
-        const HANJA_CHARS = Object.keys(hanjaData);
-        const CACHE_KEY = 'nameCache';
-
-        // 시작하기 버튼 스크롤 함수
-        function scrollToGenerate() {
-            const generateSection = document.getElementById('generate');
-            const headerOffset = 70;
-            const elementPosition = generateSection.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth"
-            });
-        }
-
         // 한자 데이터
         const hanjaData = {
             '민': { meaning: '민첩하고 똑똑한', stroke: 5 },
@@ -197,6 +180,23 @@
             '온': { meaning: '온화하고 따뜻한', stroke: 8 },
             '해': { meaning: '밝고 빛나는', stroke: 10 }
         };
+
+        // 미리 계산된 한자 배열
+        const HANJA_CHARS = Object.keys(hanjaData);
+        const CACHE_KEY = 'nameCache';
+
+        // 시작하기 버튼 스크롤 함수
+        function scrollToGenerate() {
+            const generateSection = document.getElementById('generate');
+            const headerOffset = 70;
+            const elementPosition = generateSection.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        }
 
         // 이름 생성 로직
         const nameForm = document.getElementById('nameForm');
