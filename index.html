@@ -177,9 +177,9 @@
 
     <!-- 기능 소개 섹션 -->
     <section id="features" class="py-5 bg-light">
-        <div class="container">
+    <div class="container">
             <h2 class="text-center mb-5">주요 기능</h2>
-            <div class="row">
+        <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 border-0 shadow-sm feature-card">
                         <div class="card-body text-center">
@@ -195,26 +195,26 @@
                             <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
                             <h4 class="card-title">운세 분석</h4>
                             <p class="card-text">출생년도와 한자의 조화를 분석하여 운세 점수를 제공합니다.</p>
-                        </div>
                     </div>
                 </div>
+            </div>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 border-0 shadow-sm feature-card">
                         <div class="card-body text-center">
                             <i class="fas fa-book fa-3x text-primary mb-3"></i>
                             <h4 class="card-title">한자 데이터베이스</h4>
                             <p class="card-text">다양한 한자와 그 의미를 포함한 풍부한 데이터베이스를 보유하고 있습니다.</p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- 푸터 -->
     <footer class="bg-dark text-light py-4">
-        <div class="container">
-            <div class="row">
+    <div class="container">
+        <div class="row">
                 <div class="col-12 text-center">
                     <p class="mb-2">© 2025 AI 작명소. All rights reserved.</p>
                     <p class="mb-0">
@@ -275,6 +275,7 @@
 
         // 순수 한국어 이름 데이터
         const koreanNameData = {
+            // 자연 관련
             '하늘': { meaning: '맑고 높은 하늘', type: ['자연'] },
             '바다': { meaning: '넓고 깊은 바다', type: ['자연'] },
             '달': { meaning: '밝은 달', type: ['자연'] },
@@ -283,18 +284,100 @@
             '나래': { meaning: '날개', type: ['자연'] },
             '솔': { meaning: '소나무', type: ['자연'] },
             '가람': { meaning: '강, 물길', type: ['자연'] },
-            '새롬': { meaning: '새로움', type: ['의미'] },
-            '보람': { meaning: '가치 있는 결실', type: ['의미'] },
-            '슬기': { meaning: '지혜', type: ['의미'] },
-            '아름': { meaning: '아름다움', type: ['의미'] },
-            '다운': { meaning: '아름답고 고운', type: ['형용'] },
+            '미르': { meaning: '용, 물의 신령', type: ['자연', '신령'] },
+            '뫼': { meaning: '산', type: ['자연'] },
+            '강': { meaning: '큰 물줄기', type: ['자연'] },
+            '내': { meaning: '시냇물', type: ['자연'] },
+            '샘': { meaning: '물이 솟는 곳', type: ['자연'] },
+            '바람': { meaning: '자유로운 바람', type: ['자연'] },
+            '비': { meaning: '생명을 키우는 비', type: ['자연'] },
+            '눈': { meaning: '하얀 눈', type: ['자연'] },
+            '이슬': { meaning: '맑은 이슬', type: ['자연'] },
+            '안개': { meaning: '부드러운 안개', type: ['자연'] },
+            '노을': { meaning: '저녁 노을', type: ['자연'] },
+            '햇살': { meaning: '따뜻한 햇살', type: ['자연'] },
+            '단비': { meaning: '기다리던 비', type: ['자연'] },
             '고운': { meaning: '아름답고 예쁜', type: ['형용'] },
             '맑은': { meaning: '깨끗하고 밝은', type: ['형용'] },
             '바른': { meaning: '올바르고 바른', type: ['형용'] },
-            '힘찬': { meaning: '활력 있는', type: ['형용'] },
             '푸른': { meaning: '푸르고 싱그러운', type: ['형용'] },
             '밝은': { meaning: '환하고 밝은', type: ['형용'] },
-            '단아': { meaning: '단정하고 아름다운', type: ['형용'] }
+            '단아': { meaning: '단정하고 아름다운', type: ['형용'] },
+            
+            // 자연물과 현상
+            '가온': { meaning: '중심, 한가운데', type: ['의미'] },
+            '가을': { meaning: '풍요로운 계절', type: ['자연'] },
+            '겨레': { meaning: '민족, 한 핏줄', type: ['의미'] },
+            '고래': { meaning: '바다의 큰 동물', type: ['자연'] },
+            '나비': { meaning: '나비처럼 예쁘고 자유로운', type: ['자연'] },
+            '다래': { meaning: '달래, 산에서 자라는 열매', type: ['자연'] },
+            '도래': { meaning: '돌아옴, 순환', type: ['의미'] },
+            '마루': { meaning: '꼭대기, 절정', type: ['의미'] },
+            '무지개': { meaning: '일곱 빛깔의 다리', type: ['자연'] },
+            '미리내': { meaning: '은하수', type: ['자연'] },
+            '바위': { meaning: '단단한 돌', type: ['자연'] },
+            '보라': { meaning: '보라색 꽃', type: ['자연'] },
+            '봄': { meaning: '새싹이 돋는 계절', type: ['자연'] },
+            '빛나': { meaning: '빛이 나는', type: ['형용'] },
+            '사랑': { meaning: '사랑', type: ['의미'] },
+            '새벽': { meaning: '새로운 시작', type: ['자연'] },
+            '샛별': { meaning: '새벽에 뜨는 별', type: ['자연'] },
+            '소리': { meaning: '아름다운 소리', type: ['의미'] },
+            '솔빛': { meaning: '소나무 빛깔', type: ['자연'] },
+            '시내': { meaning: '흐르는 물', type: ['자연'] },
+            '아리': { meaning: '아름답다', type: ['형용'] },
+            '아침': { meaning: '새로운 시작', type: ['자연'] },
+            '여름': { meaning: '열정적인 계절', type: ['자연'] },
+            '열매': { meaning: '결실', type: ['자연'] },
+            '예솔': { meaning: '예쁜 소나무', type: ['자연'] },
+            '오름': { meaning: '작은 산', type: ['자연'] },
+            '우주': { meaning: '넓은 우주', type: ['자연'] },
+            '울림': { meaning: '마음의 울림', type: ['의미'] },
+            '은하': { meaning: '은하수', type: ['자연'] },
+            '자락': { meaning: '산자락', type: ['자연'] },
+            '잔디': { meaning: '푸른 잔디', type: ['자연'] },
+            '조아': { meaning: '좋은, 훌륭한', type: ['형용'] },
+            '지니': { meaning: '지혜를 가진', type: ['의미'] },
+            '초롱': { meaning: '밝은 빛', type: ['자연'] },
+            '하얀': { meaning: '순수한 흰색', type: ['형용'] },
+            '한울': { meaning: '큰 하늘', type: ['자연'] },
+            '해달': { meaning: '해와 달', type: ['자연'] },
+            '해솔': { meaning: '해가 비치는 소나무', type: ['자연'] },
+            '해오름': { meaning: '해가 떠오름', type: ['자연'] },
+            '홍실': { meaning: '붉은 실', type: ['자연'] },
+            '희망': { meaning: '밝은 희망', type: ['의미'] },
+            
+            // 전통 및 문화
+            '가야': { meaning: '아름다운 노래', type: ['예술'] },
+            '가온길': { meaning: '중심이 되는 길', type: ['의미'] },
+            '고운빛': { meaning: '아름다운 빛', type: ['형용'] },
+            '나래새': { meaning: '날개 달린 새', type: ['자연'] },
+            '다솜': { meaning: '사랑', type: ['의미'] },
+            '단아름': { meaning: '고운 아름다움', type: ['형용'] },
+            '도담': { meaning: '맑고 깨끗함', type: ['형용'] },
+            '두리': { meaning: '둘레, 주위', type: ['의미'] },
+            '마음': { meaning: '순수한 마음', type: ['의미'] },
+            '바른길': { meaning: '올바른 길', type: ['의미'] },
+            '보듬': { meaning: '감싸안음', type: ['의미'] },
+            '보름': { meaning: '달이 가득 찬 날', type: ['자연'] },
+            '빛가람': { meaning: '빛나는 강', type: ['자연'] },
+            '사랑별': { meaning: '사랑스러운 별', type: ['자연'] },
+            '새봄': { meaning: '새로운 봄', type: ['자연'] },
+            '샘물': { meaning: '맑은 샘물', type: ['자연'] },
+            '솔가람': { meaning: '소나무와 강', type: ['자연'] },
+            '아리솔': { meaning: '아름다운 소나무', type: ['자연'] },
+            '여울': { meaning: '물살이 센 곳', type: ['자연'] },
+            '열린': { meaning: '열려있는 마음', type: ['의미'] },
+            '우리': { meaning: '함께하는 공동체', type: ['의미'] },
+            '윤슬': { meaning: '물결에 비치는 햇빛', type: ['자연'] },
+            '이레': { meaning: '일곱 날', type: ['의미'] },
+            '자비': { meaning: '사랑과 자비', type: ['의미'] },
+            '정든': { meaning: '정이 든', type: ['의미'] },
+            '한결': { meaning: '한결같은', type: ['의미'] },
+            '한별': { meaning: '크고 밝은 별', type: ['자연'] },
+            '해랑': { meaning: '해와 함께', type: ['자연'] },
+            '해린': { meaning: '넓은 바다', type: ['자연'] },
+            '해솔빛': { meaning: '소나무에 비치는 햇빛', type: ['자연'] }
         };
 
         // 미리 계산된 한자 배열
@@ -481,8 +564,8 @@
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                </div>
+            </div>
                         `;
                     } else {
                         content = `
@@ -505,10 +588,10 @@
                                                     </li>
                                                 `).join('')}
                                             </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
                         `;
                     }
                     
@@ -647,7 +730,7 @@
 
                 return analysis;
             }
-        });
-    </script>
+    });
+</script>
 </body>
 </html> 
