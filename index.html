@@ -289,18 +289,37 @@
                 Array.from(name).forEach(char => {
                     const hanja = hanjaData[char];
                     if (hanja) {
-                        analysis.push(`${char}: ${hanja.meaning} (획수: ${hanja.stroke})`);
+                        analysis.push(`${char}(${hanja.stroke}획): ${hanja.meaning}`);
                     }
                 });
 
+                // 총획수 분석
+                analysis.push(`총 획수: ${totalStrokes}획`);
+
                 // 음양 조화 분석
-                analysis.push(totalStrokes % 2 === 0 ? 
-                    '음양 조화가 잘 맞는 이름입니다.' : 
-                    '독특한 개성을 가진 이름입니다.');
+                if (totalStrokes % 2 === 0) {
+                    analysis.push('음양이 조화롭게 균형을 이루는 이름입니다. 안정적이고 조화로운 기운을 가지고 있습니다.');
+                } else {
+                    analysis.push('독특한 개성이 돋보이는 이름입니다. 창의적이고 진취적인 기운을 가지고 있습니다.');
+                }
+
+                // 한자 조화 분석
+                const firstChar = name[0];
+                const secondChar = name[1];
+                const firstStroke = hanjaData[firstChar]?.stroke || 0;
+                const secondStroke = hanjaData[secondChar]?.stroke || 0;
+                
+                if (Math.abs(firstStroke - secondStroke) <= 2) {
+                    analysis.push('두 글자의 획수가 조화롭게 어울립니다.');
+                } else if (firstStroke < secondStroke) {
+                    analysis.push('점진적으로 발전하는 기운을 가진 이름입니다.');
+                } else {
+                    analysis.push('안정감 있게 성장하는 기운을 가진 이름입니다.');
+                }
 
                 // 출생년도 조화 분석
                 if (Math.abs(totalStrokes - yearLastDigit * 2) <= 2) {
-                    analysis.push('출생년도와 조화로운 이름입니다.');
+                    analysis.push('출생년도와 이름의 획수가 조화를 이루어 행운을 가져다주는 이름입니다.');
                 }
 
                 return analysis;
