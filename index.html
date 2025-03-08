@@ -460,49 +460,71 @@
 
         // 영어 이름 데이터
         const englishNameData = {
-            // Nature-inspired
-            'River': { meaning: 'Flowing water', type: ['nature'] },
-            'Sky': { meaning: 'The heavens above', type: ['nature'] },
-            'Dawn': { meaning: 'First appearance of light', type: ['nature'] },
-            'Forest': { meaning: 'Wooded area', type: ['nature'] },
-            'Rain': { meaning: 'Water from the sky', type: ['nature'] },
-            'Storm': { meaning: 'Powerful weather', type: ['nature'] },
-            'Brook': { meaning: 'Small stream', type: ['nature'] },
-            'Glen': { meaning: 'Valley', type: ['nature'] },
-            'Lake': { meaning: 'Body of water', type: ['nature'] },
-            'Meadow': { meaning: 'Grassy area', type: ['nature'] },
+            // Traditional Male Names
+            'Alexander': { meaning: 'Defender of the people', type: ['male', 'greek'], origin: 'Greek' },
+            'Benjamin': { meaning: 'Son of the right hand', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Christopher': { meaning: 'Bearer of Christ', type: ['male', 'greek'], origin: 'Greek' },
+            'Daniel': { meaning: 'God is my judge', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Ethan': { meaning: 'Strong, enduring', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Gabriel': { meaning: 'God is my strength', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Henry': { meaning: 'Ruler of the home', type: ['male', 'germanic'], origin: 'Germanic' },
+            'Isaac': { meaning: 'He will laugh', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'James': { meaning: 'Supplanter', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Lucas': { meaning: 'Light giving', type: ['male', 'latin'], origin: 'Latin' },
+            'Matthew': { meaning: 'Gift of God', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Nathan': { meaning: 'Gift from God', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Oliver': { meaning: 'Olive tree', type: ['male', 'latin'], origin: 'Latin' },
+            'William': { meaning: 'Resolute protector', type: ['male', 'germanic'], origin: 'Germanic' },
 
-            // Virtues and Qualities
-            'Hope': { meaning: 'Optimistic feeling', type: ['virtue'] },
-            'Joy': { meaning: 'Great happiness', type: ['virtue'] },
-            'Grace': { meaning: 'Elegance and divine favor', type: ['virtue'] },
-            'Faith': { meaning: 'Complete trust', type: ['virtue'] },
-            'Peace': { meaning: 'State of tranquility', type: ['virtue'] },
-            'Love': { meaning: 'Deep affection', type: ['virtue'] },
-            'Harmony': { meaning: 'Agreement in feeling', type: ['virtue'] },
-            'Destiny': { meaning: 'Predetermined future', type: ['virtue'] },
-            'Liberty': { meaning: 'Freedom', type: ['virtue'] },
-            'Melody': { meaning: 'Sweet sequence of sounds', type: ['virtue'] },
+            // Traditional Female Names
+            'Abigail': { meaning: 'Father\'s joy', type: ['female', 'hebrew'], origin: 'Hebrew' },
+            'Charlotte': { meaning: 'Free woman', type: ['female', 'french'], origin: 'French' },
+            'Elizabeth': { meaning: 'God is my oath', type: ['female', 'hebrew'], origin: 'Hebrew' },
+            'Emma': { meaning: 'Universal', type: ['female', 'germanic'], origin: 'Germanic' },
+            'Grace': { meaning: 'Divine grace', type: ['female', 'latin'], origin: 'Latin' },
+            'Isabella': { meaning: 'Pledged to God', type: ['female', 'hebrew'], origin: 'Hebrew' },
+            'Katherine': { meaning: 'Pure', type: ['female', 'greek'], origin: 'Greek' },
+            'Lily': { meaning: 'Pure, flower', type: ['female', 'english'], origin: 'English' },
+            'Mia': { meaning: 'Mine, beloved', type: ['female', 'italian'], origin: 'Italian' },
+            'Olivia': { meaning: 'Olive tree', type: ['female', 'latin'], origin: 'Latin' },
+            'Sophia': { meaning: 'Wisdom', type: ['female', 'greek'], origin: 'Greek' },
+            'Victoria': { meaning: 'Victory', type: ['female', 'latin'], origin: 'Latin' },
 
-            // Colors and Light
-            'Azure': { meaning: 'Sky blue', type: ['color'] },
-            'Amber': { meaning: 'Orange yellow', type: ['color'] },
-            'Crystal': { meaning: 'Clear, pure', type: ['color'] },
-            'Ruby': { meaning: 'Deep red', type: ['color'] },
-            'Silver': { meaning: 'Shining gray', type: ['color'] },
-            'Golden': { meaning: 'Precious yellow', type: ['color'] },
-            'Pearl': { meaning: 'Lustrous white', type: ['color'] },
-            'Scarlet': { meaning: 'Bright red', type: ['color'] },
+            // Modern Male Names
+            'Aiden': { meaning: 'Little fire', type: ['male', 'irish'], origin: 'Irish' },
+            'Caleb': { meaning: 'Faithful, devoted', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Dylan': { meaning: 'Son of the sea', type: ['male', 'welsh'], origin: 'Welsh' },
+            'Elijah': { meaning: 'Yahweh is God', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Jackson': { meaning: 'Son of Jack', type: ['male', 'english'], origin: 'English' },
+            'Liam': { meaning: 'Strong-willed warrior', type: ['male', 'irish'], origin: 'Irish' },
+            'Mason': { meaning: 'Stone worker', type: ['male', 'english'], origin: 'English' },
+            'Noah': { meaning: 'Rest, comfort', type: ['male', 'hebrew'], origin: 'Hebrew' },
+            'Sebastian': { meaning: 'Revered', type: ['male', 'greek'], origin: 'Greek' },
+            'Zachary': { meaning: 'Remembered by God', type: ['male', 'hebrew'], origin: 'Hebrew' },
 
-            // Flowers and Plants
-            'Rose': { meaning: 'Flowering plant', type: ['nature'] },
-            'Lily': { meaning: 'Elegant flower', type: ['nature'] },
-            'Iris': { meaning: 'Rainbow flower', type: ['nature'] },
-            'Ivy': { meaning: 'Climbing plant', type: ['nature'] },
-            'Hazel': { meaning: 'Tree or shrub', type: ['nature'] },
-            'Willow': { meaning: 'Graceful tree', type: ['nature'] },
-            'Violet': { meaning: 'Purple flower', type: ['nature'] },
-            'Jasmine': { meaning: 'Sweet-smelling flower', type: ['nature'] }
+            // Modern Female Names
+            'Aria': { meaning: 'Air, melody', type: ['female', 'italian'], origin: 'Italian' },
+            'Autumn': { meaning: 'Born in fall', type: ['female', 'english'], origin: 'English' },
+            'Chloe': { meaning: 'Blooming', type: ['female', 'greek'], origin: 'Greek' },
+            'Eva': { meaning: 'Life', type: ['female', 'hebrew'], origin: 'Hebrew' },
+            'Harper': { meaning: 'Harp player', type: ['female', 'english'], origin: 'English' },
+            'Luna': { meaning: 'Moon', type: ['female', 'latin'], origin: 'Latin' },
+            'Maya': { meaning: 'Water', type: ['female', 'hebrew'], origin: 'Hebrew' },
+            'Scarlett': { meaning: 'Red', type: ['female', 'english'], origin: 'English' },
+            'Stella': { meaning: 'Star', type: ['female', 'latin'], origin: 'Latin' },
+            'Zoe': { meaning: 'Life', type: ['female', 'greek'], origin: 'Greek' },
+
+            // Unique Names
+            'Atlas': { meaning: 'Enduring', type: ['male', 'greek'], origin: 'Greek' },
+            'Aurora': { meaning: 'Dawn', type: ['female', 'latin'], origin: 'Latin' },
+            'Eden': { meaning: 'Place of pleasure', type: ['unisex', 'hebrew'], origin: 'Hebrew' },
+            'Felix': { meaning: 'Happy, fortunate', type: ['male', 'latin'], origin: 'Latin' },
+            'Hazel': { meaning: 'The hazel tree', type: ['female', 'english'], origin: 'English' },
+            'Iris': { meaning: 'Rainbow', type: ['female', 'greek'], origin: 'Greek' },
+            'Leo': { meaning: 'Lion', type: ['male', 'latin'], origin: 'Latin' },
+            'Nova': { meaning: 'New', type: ['female', 'latin'], origin: 'Latin' },
+            'Phoenix': { meaning: 'Dark red', type: ['unisex', 'greek'], origin: 'Greek' },
+            'Sage': { meaning: 'Wise', type: ['unisex', 'latin'], origin: 'Latin' }
         };
 
         // 미리 계산된 한자 배열
@@ -717,7 +739,6 @@
                 </div>
             </div>
         </div>
-    </div>
                         `;
                     }
                     
@@ -751,7 +772,7 @@
                     } else if (nameType === 'korean') {
                         names = generateKoreanNames(familyName, gender);
                     } else if (nameType === 'english') {
-                        names = generateEnglishNames(familyName);
+                        names = generateEnglishNames(familyName, gender);
                     }
                     displayResults(names, nameType);
                     loading.style.display = 'none';
@@ -860,26 +881,35 @@
             }
 
             // 영어 이름 생성 함수
-            function generateEnglishNames(familyName) {
+            function generateEnglishNames(familyName, gender) {
                 const names = [];
                 const usedCombinations = new Set();
                 const maxAttempts = 1000;
                 let attempts = 0;
 
+                // 성별에 맞는 이름 필터링
+                const filteredNames = Object.entries(englishNameData).filter(([_, data]) => {
+                    if (gender === '남') {
+                        return data.type.includes('male') || data.type.includes('unisex');
+                    } else if (gender === '여') {
+                        return data.type.includes('female') || data.type.includes('unisex');
+                    }
+                    return true;
+                });
+
                 while (names.length < 10 && attempts < maxAttempts) {
                     attempts++;
-                    const name = ENGLISH_NAMES[Math.floor(Math.random() * ENGLISH_NAMES.length)];
+                    const [name, data] = filteredNames[Math.floor(Math.random() * filteredNames.length)];
                     
                     if (!usedCombinations.has(name)) {
                         usedCombinations.add(name);
-                        const meaning = englishNameData[name].meaning;
-                        const types = englishNameData[name].type;
                         names.push({
                             name: familyName + ' ' + name,
                             english: name,
-                            meaning: meaning,
-                            types: types,
-                            analysis: generateEnglishAnalysis(name, types)
+                            meaning: data.meaning,
+                            origin: data.origin,
+                            types: data.type,
+                            analysis: generateEnglishAnalysis(name, data)
                         });
                     }
                 }
@@ -887,24 +917,46 @@
                 return names;
             }
 
-            function generateEnglishAnalysis(name, types) {
+            function generateEnglishAnalysis(name, data) {
                 const analysis = [];
                 
                 // 의미 분석
-                analysis.push(`Meaning: ${englishNameData[name].meaning}`);
+                analysis.push(`Meaning: ${data.meaning}`);
                 
-                // 이름 유형 분석
-                analysis.push(`Name type: ${types.join(', ')}`);
+                // 이름 유형과 기원
+                analysis.push(`Origin: ${data.origin}`);
+                analysis.push(`Name type: ${data.type.join(', ')}`);
                 
                 // 특징 분석
-                if (types.includes('nature')) {
-                    analysis.push('This name draws inspiration from the natural world.');
+                if (data.type.includes('traditional')) {
+                    analysis.push('This is a traditional name with deep historical roots.');
                 }
-                if (types.includes('virtue')) {
-                    analysis.push('This name represents an admirable quality or virtue.');
+                if (data.type.includes('modern')) {
+                    analysis.push('This is a modern name that has gained popularity in recent years.');
                 }
-                if (types.includes('color')) {
-                    analysis.push('This name evokes a beautiful color or visual quality.');
+                if (data.type.includes('unisex')) {
+                    analysis.push('This name is suitable for any gender.');
+                }
+
+                // 문화적 의미
+                switch (data.origin.toLowerCase()) {
+                    case 'hebrew':
+                        analysis.push('This name has biblical origins and carries spiritual significance.');
+                        break;
+                    case 'greek':
+                        analysis.push('This name comes from ancient Greek culture and mythology.');
+                        break;
+                    case 'latin':
+                        analysis.push('This name has classical Latin roots.');
+                        break;
+                    case 'germanic':
+                        analysis.push('This name has strong Germanic heritage.');
+                        break;
+                    case 'celtic':
+                    case 'irish':
+                    case 'welsh':
+                        analysis.push('This name has Celtic origins and reflects ancient British Isles culture.');
+                        break;
                 }
 
                 return analysis;
